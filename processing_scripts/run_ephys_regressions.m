@@ -40,4 +40,4 @@ for lock_i = 1:4
 end
 toc
 
-save('ofc_SSEs.mat', 'sse_full_all', 'sse_leftout', 'bin_mids_by_lock', 'bad_glm')
+save('files/ofc_SSEs.mat', 'sse_full_all', 'sse_leftout', 'bin_mids_by_lock', 'bad_glm')

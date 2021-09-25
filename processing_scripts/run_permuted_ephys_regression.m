@@ -1,4 +1,4 @@
-function compute_permuted_sse(cell_i)
+function run_permuted_ephys_regression(cell_i)
 
 loaded = load('ofc_ephys_preprocessed');
 
@@ -41,6 +41,6 @@ for lock_i = 1:4
     
 end
 
-save(['permuted_sse/permuted_sse_cell_' num2str(cell_i)], 'sse_full_all', 'sse_leftout')
+save(['files/permuted_sse/permuted_sse_cell_' num2str(cell_i)], 'sse_full_all', 'sse_leftout')
 
 end
