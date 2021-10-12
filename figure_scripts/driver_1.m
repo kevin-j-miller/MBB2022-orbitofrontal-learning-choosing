@@ -1,7 +1,7 @@
 %% Gather behavioral datasets
 
-opto_data = load('opto_dataset');
-ephys_data = load('physdata_corrected.mat');
+opto_data = load('ofc_learning_choosing_dataset_opto.mat');
+ephys_data = load('ofc_learning_choosing_dataset_ephys.mat');
 
 % Remove ephys fields from the ephys data
 ephys_data_beh_sessions = rmfield(ephys_data.ratdatas, {'spiketimes', 'cell_types','unitchannels', 'to_exclude'});
@@ -21,9 +21,8 @@ ratdata_conditions = [ones(1, length(opto_data.stimdata)), ...
 
 %% Fit the model, generate synthetic datasets
 % Fit Model
-model_path = 'analysis_code/stan_models\multiagent_model_single.stan';
+model_path = fullfile(ofc_learning_choosing_path, 'library', 'behavior_analysis','stan_models','multiagent_model_single.stan');
 inc = [1,0,1,0,0,1,1,0];
-addpath(genpath('C:\Users\kevin\Documents\Software\Stan'))
 
 for rat_i = 1:length(ratdatas_all)
     ratdata = ratdatas_all{rat_i};
