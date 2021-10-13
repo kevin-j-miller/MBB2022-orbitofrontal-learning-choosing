@@ -9,7 +9,7 @@ ephys_data_beh_sessions = rmfield(ephys_data.ratdatas, {'spiketimes', 'cell_type
 [~, ~, inds] = unique(vertcat(ephys_data_beh_sessions.ratname), 'rows');
 % Merge all sessions from each rat
 for rat_i = 1:6
-    ephys_data_beh_rats{rat_i} = merge_ratdata_cell(ephys_data_beh_sessions(inds == rat_i));
+    ephys_data_beh_rats{rat_i} = merge_ratdata_cell(ephys_data_beh_sessions(inds == rat_i), 1);
 end
 
 ratdatas_all = [opto_data.stimdata, opto_data.opto_data_cntrl, ephys_data_beh_rats];

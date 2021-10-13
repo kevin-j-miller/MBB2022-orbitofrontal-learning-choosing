@@ -10,4 +10,5 @@ https://web.stanford.edu/~hastie/glmnet_matlab/
 
 https://mc-stan.org/users/interfaces/matlab-stan
 
-Preprocessed data files
+Opto dataset: ofc_learning_choosing_dataset_opto.mat 
+Ephys dataset: ofc_learning_choosing_datset_ephys.mat

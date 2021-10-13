@@ -7,11 +7,11 @@ if ~exist('metaRat','var')
     metaRat = 0;
 end
 
-% Takes a cell or ratdatas, merges them into one big ratdata
-if length(ratdata_cell) == 0
+% Takes a cell of ratdatas, merges them into one big ratdata
+if isempty(ratdata_cell)
     merged_ratdatas = {};
     return
-elseif length(ratdata_cell) == 1;
+elseif length(ratdata_cell) == 1
     if iscell(ratdata_cell)
     merged_ratdatas = ratdata_cell{1};
     elseif isstruct(ratdata_cell)
