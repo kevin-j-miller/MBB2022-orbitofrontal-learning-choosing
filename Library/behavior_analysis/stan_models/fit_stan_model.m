@@ -19,7 +19,7 @@ while ~done
     
     try
         
-        working_dir = fullfile(ofc_learning_choosing_path, 'files', ['stan_working_dir_' datestr(now,'YYYYMMDD_hhmmss_FFF')]);
+        working_dir = fullfile(files_path, ['stan_working_dir_' datestr(now,'YYYYMMDD_hhmmss_FFF')]);
         mkdir(working_dir);
         
         fit = stan('file', modelname, 'data', standata, 'working_dir', working_dir, 'verbose', false, 'method', 'optimize');
@@ -40,7 +40,9 @@ while ~done
         
     catch err
         fprintf([err.identifier, '\n', err.message,'\n']);
+        if exist(working_dir, 'file')
         rmdir(working_dir,'s')
+        end
     end
     
 end
