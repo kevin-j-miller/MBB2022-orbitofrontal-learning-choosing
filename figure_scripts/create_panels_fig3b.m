@@ -1,5 +1,5 @@
-sse = load('ofc_SSEs.mat');
-p = load('permuted_p_values');
+sse = load(fullfile(files_path, 'postprocessed_data', 'ofc_SSEs.mat'));
+
 nCells = length(sse.bad_glm);
 nRegs = 10;
 window_size = 1;
@@ -43,10 +43,10 @@ ylabel({'CPD: Chosen Value'},'fontsize',16);
 xlabel({'CPD: Outcome Value'},'fontsize',16);
 xlim([axmin,axmax]); ylim([axmin,axmax]);
 title('Outcome Value vs. Chosen Value');
-print([pwd,'\figures_raw\cpd_scatter_chosen.svg'],'-dsvg')
+print_svg('fig3_cpd_scatter_chosen')
 
 loglog_scatter_diagonal_histogram(xs, ys, axmin, axmax)
-print([pwd,'\figures_raw\cpd_scatter_hist_chosen.svg'],'-dsvg')
+print_svg('fig3_cpd_scatter_chosen_hist')
 
 disp('Mean CPD ratio, outcome/chosen:')
 disp(mean(xs ./ ys))
@@ -79,10 +79,10 @@ ylabel({'CPD: Choice Value Difference'},'fontsize',16);
 xlabel({'COD: Outcome Value'},'fontsize',16);
 xlim([axmin,axmax]); ylim([axmin,axmax]);
 title('Outcome Value vs. Choice Value');
-print([pwd,'\figures_raw\cpd_scatter_choice.svg'],'-dsvg')
+print_svg('fig3_cpd_scatter_choice')
 
 loglog_scatter_diagonal_histogram(xs, ys, axmin, axmax)
-print([pwd,'\figures_raw\cpd_scatter_hist_choice.svg'],'-dsvg')
+print_svg('fig3_cpd_scatter_choice_hist')
 
 disp('Mean CPD ratio, outcome/choice:')
 disp(mean(xs ./ ys))
