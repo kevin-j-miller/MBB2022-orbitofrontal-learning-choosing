@@ -5,15 +5,23 @@ opto_data = load(fullfile(files_path, 'preprocessed_data', 'ofc_learning_choosin
 ephys_data = load(fullfile(files_path, 'preprocessed_data', 'ofc_learning_choosing_dataset_ephys.mat'));
 
 % Remove ephys fields from the ephys data
-ephys_data_beh_sessions = rmfield(ephys_data.ratdatas, {'spiketimes', 'cell_types','unitchannels', 'to_exclude'});
+ephys_data_beh_sessions = remove_ephys_fields(ephys_data.ratdatas);
 % Find mapping between data and rats
 [~, ~, inds] = unique(vertcat(ephys_data_beh_sessions.ratname), 'rows');
 % Merge all sessions from each rat
 for rat_i = 1:6
-    ephys_data_beh_rats{rat_i} = merge_ratdata_cell(ephys_data_beh_sessions(inds == rat_i), 1);
+    ephys_data_beh_rats(rat_i) = merge_ratdata_cell(ephys_data_beh_sessions(inds == rat_i), 1);
 end
 
-ratdatas_all = [opto_data.stimdata, opto_data.opto_data_cntrl, ephys_data_beh_rats];
+% Get a structure with one field for each rat, containing all the
+% behavioral data from that rat
+ratdatas_all = [cell2mat(opto_data.stimdata), cell2mat(opto_data.opto_data_cntrl), ephys_data_beh_rats];
+
+% Get cell of the rat names
+ratdata_ratnames = cell(length(ratdatas_all),1);
+[ratdata_ratnames{:}] = ratdatas_all.ratname;
+
+% Get array of the rat conditions
 ratdata_conditions = [ones(1, length(opto_data.stimdata)), ...
                      2*ones(1, length(opto_data.opto_data_cntrl)),...
                      3*ones(1,length(ephys_data_beh_rats))];
@@ -34,5 +42,5 @@ for rat_i = 1:length(ratdatas_all)
 end
 
 %% Save fit parameters
-save(fullfile(files_path, 'files', 'behavioral_model_fits'),...
-    'fit_params', 'ratdatas_all', 'ratdata_conditions');
+save(fullfile(files_path, 'postprocessed_data', 'behavioral_model_fits'),...
+    'fit_params', 'ratdatas_all', 'ratdata_ratnames', 'ratdata_conditions');

@@ -1,26 +1,34 @@
-%% ELECTROPHYSIOLOGY ANALYSIS AND FIGURES SCRIPT
-% Miller, Botvinick, and Brody, 2020
-
-addpath(genpath(pwd))
+%% SCRIPTS TO RUN DATA POSTPROCESSING
+% Miller, Botvinick, and Brody, 2022
 
 %% Check that the datasets are visible
-assert(exist('ofc_learning_choosing_dataset_opto.mat', 'file') == 2, ...
+assert(exist(fullfile(files_path, 'preprocessed_data', 'ofc_learning_choosing_dataset_opto.mat'), 'file') == 2, ...
     'Unable to find opto dataset. Please find "ofc_learning_choosing_dataset_opto.mat", and place it in the Matlab path.')
 
-assert(exist('ofc_learning_choosing_dataset_ephys.mat', 'file') == 2, ...
+assert(exist(fullfile(files_path, 'preprocessed_data', 'ofc_learning_choosing_dataset_ephys.mat'), 'file') == 2, ...
     'Unable to find ephys dataset. Please find "ofc_learning_choosing_dataset_opto.mat", and place it in the Matlab path.')
 
 
-%% Preprocess
-% Requires 'physdata_corrected', containing behavioral data and spike-sorted ephys data
+%% Fit behavioral models
+% Requires 'ofc_learning_choosing_dataset_ephys' and 'ofc_learning_choosing_dataset_opto'
 
-% Fits the behavioral model, adds value information to the structures
+% Fits the behavioral model
+
+% Creates 'behavioral_model_fits.mat', containing fit parameters for each rat
+
+fit_behavioral_models
+
+%% Bin up ephys
+% Requires 'ofc_learning_choosing_dataset_ephys.mat', containing behavioral data and spike-sorted ephys data
+% Requires 'behavioral_model_fits.mat', containing fit parameters
+
+% Adds value information to the structures
 % Re-organizes structures into one-per-unit rather than one-per-session
 % Bins the spiketimes into one big matrix for each time-lock
 
-% Creates 'ofc_ephys-preprocessed.mat', 
+% Creates 'ofc_celldatas_ensemble.mat', 
 
-preprocess_ephys_data; 
+bin_organize_ephys_data; 
 
 %% Run regressions
 % Requires 'ofc_ephys_preprocessed'. 

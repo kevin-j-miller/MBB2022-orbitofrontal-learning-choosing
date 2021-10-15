@@ -1,9 +1,16 @@
+
+%% Check the organized ephys data exists
+% Create it them if it does not
+if ~exist(fullfile(files_path, 'postprocessed_data', 'ofc_celldatas_ensemble.mat'), 'file')
+    % If the model fits do not exist, re-run them
+    bin_organize_ephys_data
+end
+
 %% Load Data and define analysis parameters
-addpath(genpath(pwd))
-loaded = load('ofc_ephys_preprocessed');
+loaded = load(fullfile(files_path, 'postprocessed_data', 'ofc_celldatas_ensemble.mat'));
 
 celldatas = loaded.celldatas;
-ensemble = loaded.ensemble;
+ensemble = loaded.spike_ensemble;
 bin_mids_by_lock = loaded.bin_mids_by_lock;
 clear loaded
 
@@ -40,4 +47,5 @@ for lock_i = 1:4
 end
 toc
 
-save('files/ofc_SSEs.mat', 'sse_full_all', 'sse_leftout', 'bin_mids_by_lock', 'bad_glm')
+save(fullfile(files_path, 'postprocessed_data', 'ofc_SSEs.mat'),...
+    'sse_full_all', 'sse_leftout', 'bin_mids_by_lock', 'bad_glm')
