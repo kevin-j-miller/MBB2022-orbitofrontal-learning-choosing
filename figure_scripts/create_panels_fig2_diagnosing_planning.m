@@ -17,79 +17,56 @@ ephys_rats = find(ratdata_conditions == 3);
 
 %% Run behavior regressions
 nBack = 5;
-ylims = [-1.5, 3];
+betas_all = [];
+
 for rat_i = 1:length(opto_rats)
-    % For the actual data
-    ratdata = ratdatas_all{opto_rats(rat_i)};
-    results = twostep_glm(ratdata, nBack);
+    
+    ratdata = ratdatas_all(opto_rats(rat_i));
+    results = twostep_glm(ratdata, nBack, 0);
+    betas_all = [betas_all, results.betas];
     mb_opto(rat_i) = results.mb_ind;
     mf_opto(rat_i) = results.mf_ind;
-    legend off
-    set(gca,'Xdir','reverse')
-    box off
-    ylim(ylims)
-    print_svg(['Fig1_S1_individual_rat_glms/opto', num2str(rat_i)]);
     
-    % For synthetic data
-    p = fit_params(opto_rats(rat_i));
-    params = [p.alphaMB, p.betaMB, p.betaBonus, p.betaPersev, p.betaBias];
-    simdata = generate_simulated_data('mb_bonus_persev_bias',params,ratdata);
-    twostep_glm(simdata, nBack);
-    legend off
-    set(gca,'Xdir','reverse')
-    box off
-    ylim(ylims)
-    print_svg(['Fig1_S1_individual_rat_glms/opto', num2str(rat_i), '_simdata']);
 end
 
+example_rat_ind = 4;
+
 for rat_i = 1:length(sham_rats)
-    ratdata = ratdatas_all{sham_rats(rat_i)};
-    results = twostep_glm(ratdata);
+    ratdata = ratdatas_all(sham_rats(rat_i));
+    results = twostep_glm(ratdata, nBack, 0);
+    betas_all = [betas_all, results.betas];
     
     mb_sham(rat_i) = results.mb_ind;
     mf_sham(rat_i) = results.mf_ind;
-    legend off
-    set(gca,'Xdir','reverse')
-    box off
-    ylim(ylims)
-    print_svg(['Fig1_S1_individual_rat_glms/sham', num2str(rat_i)]);
     
-     % For synthetic data
-    p = fit_params(sham_rats(rat_i));
-    params = [p.alphaMB, p.betaMB, p.betaBonus, p.betaPersev, p.betaBias];
-    simdata = generate_simulated_data('mb_bonus_persev_bias',params,ratdata);
-    twostep_glm(simdata, nBack);
-    legend off
-    set(gca,'Xdir','reverse')
-    box off
-    ylim(ylims)
-    print_svg(['Fig1_S1_individual_rat_glms/sham', num2str(rat_i), '_simdata']);
+    
+    if rat_i == example_rat_ind
+        twostep_glm(ratdata, nBack, 1);
+        title('Example Rat')
+        legend off
+        set(gca,'Xdir','reverse')
+        box off
+        
+        print_svg('fig2_glm_example');
+    end
+    
+    
 end
 
 for rat_i = 1:length(ephys_rats)
-    ratdata = ratdatas_all{ephys_rats(rat_i)};
-    results = twostep_glm(ratdata);
+    ratdata = ratdatas_all(ephys_rats(rat_i));
+    results = twostep_glm(ratdata, nBack, 0);
+    betas_all = [betas_all, results.betas];
     
     mb_ephys(rat_i) = results.mb_ind;
     mf_ephys(rat_i) = results.mf_ind;
-    legend off
-    set(gca,'Xdir','reverse')
-    box off
-    ylim(ylims)
-    print_svg(['Fig1_S1_individual_rat_glms/ephys', num2str(rat_i)]);
     
-    % For synthetic data
-    p = fit_params(ephys_rats(rat_i));
-    params = [p.alphaMB, p.betaMB, p.betaBonus, p.betaPersev, p.betaBias];
-    simdata = generate_simulated_data('mb_bonus_persev_bias',params,ratdata);
-    twostep_glm(simdata, nBack);
-    legend off
-    set(gca,'Xdir','reverse')
-    box off
-    ylim(ylims)
-    print_svg(['Fig1_S1_individual_rat_glms/ephys', num2str(rat_i), '_simdata']);
 end
 
+% All rats
+plot_pretty_glms(betas_all', nBack)
+title('All Rats')
+print_svg('fig2_glm_all');
 
 %% Scatterplot of model-based vs. model-free indices
 marker_size = 75;
@@ -119,7 +96,7 @@ set(gca,'fontsize',14)
 xlabel('Planning Index')
 ylabel('Model-Free Index')
 
-print_svg('fig1_mbmf_scatter');
+print_svg('fig2_mbmf_scatter');
 
 %% Scatterplot of fit parameter values
 marker_size = 75;
@@ -164,4 +141,4 @@ ylabel('Normalized Mixture Weight')
 set(gca,'xticklabel', {'Planning', 'Perseveration', 'Novelty Preference', 'Bias'})
 
 
-print_svg('fig1_params_scatter')
+print_svg('fig2_params_scatter')
