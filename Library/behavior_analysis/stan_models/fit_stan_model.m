@@ -22,7 +22,7 @@ while ~done
         working_dir = fullfile(files_path, ['stan_working_dir_' datestr(now,'YYYYMMDD_hhmmss_FFF')]);
         mkdir(working_dir);
         
-        fit = stan('file', modelname, 'data', standata, 'working_dir', working_dir, 'verbose', false, 'method', 'optimize');
+        fit = stan('file', modelname, 'data', standata, 'working_dir', working_dir, 'verbose', true, 'method', 'optimize');
         fit.block;
         
         rmdir(working_dir,'s')
