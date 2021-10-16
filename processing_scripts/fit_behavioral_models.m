@@ -34,7 +34,7 @@ model_path = fullfile(code_path, 'library', 'behavior_analysis','stan_models','m
 inc = [1,0,1,0,0,1,1,0];
 
 for rat_i = 1:length(ratdatas_all)
-    ratdata = ratdatas_all{rat_i};
+    ratdata = ratdatas_all(rat_i);
     standata = ratdata2standata(ratdata, inc);
     
    results = fit_stan_model(standata, model_path);

@@ -25,7 +25,7 @@ tic
 for lock_i = 1:4
     ensemble_lock = ensemble{lock_i};
     
-    parfor cell_i = 1:nCells
+    for cell_i = 1:nCells
         disp(['Running lock ' num2str(lock_i) ', unit ' num2str(cell_i)]);
         
         nTrials = celldatas(cell_i).nTrials;
