@@ -26,7 +26,11 @@ while ~done
     wd = ['working_folders/',datestr(now,'yyyymmdd_HHMMSSFFF')];
     mkdir(wd);
         
+<<<<<<< HEAD
         fit = stan('file', model_file, 'data', standata, 'working_dir', wd, 'verbose', false, 'method', 'optimize');
+=======
+        fit = stan('file', modelname, 'data', standata, 'working_dir', working_dir, 'verbose', true, 'method', 'optimize');
+>>>>>>> d2723f57b452bf30aa463f9500af6d421d486df9
         fit.block;
         
         rmdir(wd,'s')
