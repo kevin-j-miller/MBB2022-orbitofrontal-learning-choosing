@@ -1,5 +1,5 @@
 function rgb = task_orange
 
-rgb = [0,112,60] / 255;
+rgb = [194, 93, 6;] / 255;
 
 end

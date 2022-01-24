@@ -1,7 +1,6 @@
-function normLik = xval_twostep_stan(data_rat,inc)
+function [normLik, fits] = xval_twostep_stan(data_rat,inc)
 
-    model_file = 'analysis_code/stan_models/multiagent_model_single_xval.stan';
-
+    model_file = fullfile(code_path, 'library', 'behavior_analysis','stan_models','multiagent_model_single_xval.stan');
     data_rat = remove_viols(data_rat);
 
     [data_even,data_odd] = split_even_odd(data_rat);
@@ -47,5 +46,8 @@ function normLik = xval_twostep_stan(data_rat,inc)
     xval_ll = fit_even_extracted.xval_ll + fit_odd_extracted.xval_ll;
     
     normLik = exp(xval_ll / data_rat.nTrials);
+    
+    fits.fit_even = fit_even_extracted;
+    fits.fit_odd = fit_odd_extracted;
     
 end

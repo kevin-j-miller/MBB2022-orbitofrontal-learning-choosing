@@ -1,13 +1,19 @@
+
+if ~exist(fullfile(files_path, 'postprocessed_data', 'behavioral_model_fits.mat'), 'file')
+    % If the model fits do not exist, re-run them
+    fit_behavioral_models
+end
+
 loaded = load(fullfile(files_path, 'postprocessed_data', 'behavioral_model_fits.mat'));
 fit_params = loaded.fit_params;
 ratdatas_all = loaded.ratdatas_all;
 
 %% Plot behavior example
 example_rat_ind = 10;
-example_session_ind = 2;
+example_session_ind = 5;
 example_data = divide_into_sessions(ratdatas_all(example_rat_ind));
 example_session = example_data{example_session_ind};
-plot_smoothed_ts(example_session,15);
+plot_smoothed_ts(example_session, 15);
 set(gca,'FontSize',20,'YTick',[0,0.5,1],'xtick',[0,250,500, 750])
 set(gcf,'pos',[100, 100, 800, 300])
 xlim([0,example_session.nTrials]); 

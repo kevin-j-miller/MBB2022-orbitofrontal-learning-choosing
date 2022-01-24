@@ -1,4 +1,4 @@
-function modeldata = generative_multiagent(alphaMF,alphaMB,betaMF,betaMB,betaBonus,betaWsls,betaPersev,bias,task)
+function modeldata = generative_multiagent(alphaMB, betaMB, alphaPersev, betaPersev, betaBonus, bias, task)
 
 % Generate simulated data using a mixture model.  Model contains
 % model-based agent, model-free agent, and one-trial-back common-stay,
@@ -45,7 +45,7 @@ for trial_i = 1:nTrials
     Q1wsls(1) = congCommon*Q2wsls(1) + ~congCommon*Q2wsls(2);
     Q1wsls(2) = congCommon*Q2wsls(2) + ~congCommon*Q2wsls(1);
     
-    Qeff = betaMB*Q1mb + betaMF*Qmf + betaBonus*Qbonus + betaWsls*Q1wsls + betaPersev*Qpersev + Qbias; % Effective Q-value
+    Qeff = betaMB*Q1mb + betaBonus*Qbonus + betaPersev*Qpersev + Qbias; % Effective Q-value
     
     actionProbs = exp(Qeff) / sum(exp(Qeff));
     
@@ -91,20 +91,10 @@ for trial_i = 1:nTrials
     nonoutcome_ind = (outcome=='l')+1; % 1 for left, 2 for right
     
     Q2mb(outcome_ind) = Q2mb(outcome_ind) + alphaMB*(reward - Q2mb(outcome_ind)); % Model-Based values
-    Qmf(choice_ind) = Qmf(choice_ind) + alphaMF*(reward - Qmf(choice_ind)); % Model-Free values
     
     % Do the learning for nonchosen side
    Q2mb(nonoutcome_ind) = Q2mb(nonoutcome_ind) + alphaMB*(~reward - Q2mb(nonoutcome_ind)); % Model-Based values
-   Qmf(nonchoice_ind) = Qmf(nonchoice_ind) + alphaMF*(~reward - Qmf(nonchoice_ind)); % Model-Free values
     
-    % Set up win-stay, lose-switch
-    if reward
-        Q2wsls = [0,0];
-        Q2wsls(outcome_ind) = 1;
-    else
-        Q2wsls = [1,1];
-        Q2wsls(outcome_ind) = 0;
-    end
     
     % Set up the bonus: +1 for chosen in common, unchosen in uncommon
     if (outcomeCong && congCommon) || (~outcomeCong && ~congCommon)
@@ -122,8 +112,8 @@ for trial_i = 1:nTrials
     end
         
     % set up persev
-    Qpersev(choice_ind) = 1;
-    Qpersev(nonchoice_ind) = 0;
+    Qpersev(choice_ind) = (1 - alphaPersev) * Qpersev(choice_ind) + alphaPersev;
+    Qpersev(nonchoice_ind) = (1 - alphaPersev) * Qpersev(nonchoice_ind);
         
     choices(trial_i) = choice;
     outcomes(trial_i) = outcome;

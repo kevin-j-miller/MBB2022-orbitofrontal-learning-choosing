@@ -30,18 +30,18 @@ for rat_i = 1:length(opto_rats)
     set(gca,'Xdir','reverse')
     box off
     ylim(ylims)
-    print_svg(['Fig2_S1_individual_rat_glms/opto', num2str(rat_i)]);
+    print_png(['Fig2_S1_individual_rat_glms/opto', num2str(rat_i)]);
     
     % For synthetic data
     p = fit_params(opto_rats(rat_i));
-    params = [p.alphaMB, p.betaMB, p.betaBonus, p.betaPersev, p.betaBias];
+    params = [p.alphaMB, p.betaMB, p.alphaPersev, p.betaPersev, p.betaBonus, p.betaBias];
     simdata = generate_simulated_data('mb_bonus_persev_bias',params,ratdata);
     twostep_glm(simdata, nBack);
     legend off
     set(gca,'Xdir','reverse')
     box off
     ylim(ylims)
-    print_svg(['Fig2_S1_individual_rat_glms/opto', num2str(rat_i), '_simdata']);
+    print_png(['Fig2_S1_individual_rat_glms/opto', num2str(rat_i), '_simdata']);
 end
 
 for rat_i = 1:length(sham_rats)
@@ -54,18 +54,18 @@ for rat_i = 1:length(sham_rats)
     set(gca,'Xdir','reverse')
     box off
     ylim(ylims)
-    print_svg(['Fig2_S1_individual_rat_glms/sham', num2str(rat_i)]);
+    print_png(['Fig2_S1_individual_rat_glms/sham', num2str(rat_i)]);
     
      % For synthetic data
     p = fit_params(sham_rats(rat_i));
-    params = [p.alphaMB, p.betaMB, p.betaBonus, p.betaPersev, p.betaBias];
+    params = [p.alphaMB, p.betaMB, p.alphaPersev, p.betaPersev, p.betaBonus, p.betaBias];
     simdata = generate_simulated_data('mb_bonus_persev_bias',params,ratdata);
     twostep_glm(simdata, nBack);
     legend off
     set(gca,'Xdir','reverse')
     box off
     ylim(ylims)
-    print_svg(['Fig2_S1_individual_rat_glms/sham', num2str(rat_i), '_simdata']);
+    print_png(['Fig2_S1_individual_rat_glms/sham', num2str(rat_i), '_simdata']);
 end
 
 for rat_i = 1:length(ephys_rats)
@@ -78,16 +78,16 @@ for rat_i = 1:length(ephys_rats)
     set(gca,'Xdir','reverse')
     box off
     ylim(ylims)
-    print_svg(['Fig2_S1_individual_rat_glms/ephys', num2str(rat_i)]);
+    print_png(['Fig2_S1_individual_rat_glms/ephys', num2str(rat_i)]);
     
     % For synthetic data
     p = fit_params(ephys_rats(rat_i));
-    params = [p.alphaMB, p.betaMB, p.betaBonus, p.betaPersev, p.betaBias];
+    params = [p.alphaMB, p.betaMB, p.alphaPersev, p.betaPersev, p.betaBonus, p.betaBias];
     simdata = generate_simulated_data('mb_bonus_persev_bias',params,ratdata);
     twostep_glm(simdata, nBack);
     legend off
     set(gca,'Xdir','reverse')
     box off
     ylim(ylims)
-    print_svg(['Fig2_S1_individual_rat_glms/ephys', num2str(rat_i), '_simdata']);
+    print_png(['Fig2_S1_individual_rat_glms/ephys', num2str(rat_i), '_simdata']);
 end

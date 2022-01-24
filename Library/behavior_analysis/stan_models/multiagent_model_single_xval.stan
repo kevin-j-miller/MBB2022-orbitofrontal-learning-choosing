@@ -25,7 +25,7 @@ data {
 	int<lower=1,upper=2> outcomes_test[nTrials_test];
 	int<lower=0,upper=1> rewards_test[nTrials_test];
 	
-	int<lower=0,upper=1> inc[8]; // Use this variable to include or exclude each of the various Q's. 
+	int<lower=0,upper=3> inc[8]; // Use this variable to include or exclude each of the various Q's. 
 	
 }
 
@@ -58,6 +58,7 @@ parameters {
 	
 	// 6) Perseveration
 	real betaPersev;
+	real<lower=0, upper=1> alphaPersev;
 	
 	// 7) Bias
 	real betaBias;
@@ -76,6 +77,8 @@ transformed parameters {
 		real alphaT_eff;
 		// 2) Model-Free
 		real betaMF_norm;
+		real alphaMF_eff;
+		real lambda_eff;
 		// 3) CS/US Bonus
 		real betaBonus_norm;
 		// 4) WS/LS MB
@@ -83,8 +86,10 @@ transformed parameters {
 		// 5) WS/LS MF
 		real betaWslsMF_norm;
 		// 6) Perseveration
+		real betaPersev_eff;
+		real alphaPersev_eff;
 		real betaPersev_norm;
-		// 7) Bias
+		
 	
 		
 	// Compute the log_prob
@@ -145,7 +150,45 @@ transformed parameters {
 	
 		
 		nTrials_rat  <- 0;
+		
+		// Decide how model-based will work
 		alphaT_eff <- alphaT*inc[8];
+		
+		// Decide how model-free will work
+		if (inc[2] == 0) { // No MF
+			alphaMF_eff = 0;
+			lambda_eff = 0;
+		}
+		else if (inc[2] == 1) { // TD(0)
+			alphaMF_eff = alphaMF;
+			lambda_eff = 0;
+		}
+		else if (inc[2] == 2) { // TD(1)
+			alphaMF_eff = alphaMF;
+			lambda_eff = 1;
+		}
+		else if (inc[2] == 3) { // TD(lambda)
+			alphaMF_eff = alphaMF;
+			lambda_eff = lambda;
+		}
+		else {
+			reject("inc[2] must be 0, 1, 2, or 3");
+		}
+		
+		// Decide how persev will work
+		if (inc[6] == 0) { // No persev
+			betaPersev_eff = 0;
+			alphaPersev_eff = 0;
+		}
+		else if (inc[6] == 1){ // One-trial-back persev
+			betaPersev_eff = betaPersev;
+			alphaPersev_eff = 1;
+		}
+		else if (inc[6] == 2) { // Exponential persev
+			betaPersev_eff = betaPersev;
+			alphaPersev_eff = alphaPersev;
+		}
+		
 		
 		// Compute the value functions
 		
@@ -193,7 +236,7 @@ transformed parameters {
 			nTrials_rat <- nTrials_rat + 1;
 		
 			// Compute log_prob for this trial
-			q_eff <- betaMB*q1_mb*inc[1] + betaMF*q1_mf*inc[2] + betaBonus*q_bonus*inc[3] + betaWslsMB*q_wslsMB*inc[4] + betaWslsMF*q_wslsMF*inc[5] + betaPersev*q_persev*inc[6] + q_bias*inc[7];
+			q_eff <- betaMB*q1_mb*inc[1] + betaMF*q1_mf + betaBonus*q_bonus*inc[3] + betaWslsMB*q_wslsMB*inc[4] + betaWslsMF*q_wslsMF*inc[5] + betaPersev_eff*q_persev + q_bias*inc[7];
 			log_probs <- log_probs + categorical_log(choices[trial_i] , softmax(to_vector(q_eff)));
 			
 			// Do the learning
@@ -232,10 +275,8 @@ transformed parameters {
 			
 			
 			// MF Learning
-			q2_mf[outcome] <- q2_mf[outcome] + alphaMF*(reward - q2_mf[outcome]);
-			q2_mf[nonoutcome] <- q2_mf[nonoutcome] + alphaMF*(1 - reward - q2_mf[nonoutcome]);
-			
-			q1_mf[choice] <- q1_mf[choice] + alphaMF*(q2_mf[outcome] - q1_mf[choice]) + alphaMF*lambda*(reward - q2_mf[outcome]);
+			q2_mf[outcome] <- q2_mf[outcome] + alphaMF_eff * (reward - q2_mf[outcome]);
+			q1_mf[choice] <- q1_mf[choice] + alphaMF_eff * (q2_mf[outcome] - q1_mf[choice]) + alphaMF_eff * lambda_eff * (reward - q2_mf[outcome]);
 			
 			// Bonus Learning
 			if (common == 1) {
@@ -266,7 +307,8 @@ transformed parameters {
 			}
 			
 			// Persev learning
-			q_persev[choice]<- 1;	q_persev[nonchoice] <- 0;
+			q_persev[choice] <- (1 - alphaPersev_eff) * q_persev[choice] + alphaPersev_eff;	
+			q_persev[nonchoice] <- (1 - alphaPersev_eff) * q_persev[nonchoice];
 			
 		}
 		
@@ -318,6 +360,7 @@ model {
 		betaWslsMF_norm ~ normal(0, 0.5);
 		// 6) Perseveration
 		betaPersev_norm ~ normal(0, 0.5);
+		alphaPersev ~ beta(3,3);
 		// 7) Bias
 		betaBias ~ normal(0, 0.5);
 		
@@ -380,7 +423,7 @@ generated quantities {
 				
 			
 				// Compute log_prob for this trial
-				q_eff <- betaMB*q1_mb*inc[1] + betaMF*q1_mf*inc[2] + betaBonus*q_bonus*inc[3] + betaWslsMB*q_wslsMB*inc[4] + betaWslsMF*q_wslsMF*inc[5] + betaPersev*q_persev*inc[6] + q_bias*inc[7];
+				q_eff <- betaMB*q1_mb*inc[1] + betaMF*q1_mf + betaBonus*q_bonus*inc[3] + betaWslsMB*q_wslsMB*inc[4] + betaWslsMF*q_wslsMF*inc[5] + betaPersev_eff*q_persev + q_bias*inc[7];
 				xval_ll <- xval_ll + categorical_log(choices_test[trial_i] , softmax(to_vector(q_eff)));
 				
 				// Do the learning
@@ -418,11 +461,10 @@ generated quantities {
 				T[choice,nonoutcome] <- T[choice,nonoutcome]*(1-alphaT_eff);
 				
 				// MF Learning
-				q2_mf[outcome] <- q2_mf[outcome] + alphaMF*(reward - q2_mf[outcome]);
-				q2_mf[nonoutcome] <- q2_mf[nonoutcome] + alphaMF*(1 - reward - q2_mf[nonoutcome]);
-				
-				q1_mf[choice] <- q1_mf[choice] + alphaMF*(q2_mf[outcome] - q1_mf[choice]) + alphaMF*lambda*(reward - q2_mf[outcome]);
-				
+			   q2_mf[outcome] <- q2_mf[outcome] + alphaMF_eff * (reward - q2_mf[outcome]);
+			   q1_mf[choice] <- q1_mf[choice] + alphaMF_eff * (q2_mf[outcome] - q1_mf[choice]) + alphaMF_eff * lambda_eff * (reward - q2_mf[outcome]);
+			
+			
 				// Bonus Learning
 				if (common == 1) {
 				q_bonus[choice]<- 1;	q_bonus[nonchoice] <- 0;
@@ -451,9 +493,9 @@ generated quantities {
 					}
 				}
 				
-				// Persev learning
-				q_persev[choice]<- 1;	q_persev[nonchoice] <- 0;
-				
+			// Persev learning
+			q_persev[choice] <- (1 - alphaPersev_eff) * q_persev[choice] + alphaPersev_eff;	
+			q_persev[nonchoice] <- (1 - alphaPersev_eff) * q_persev[nonchoice];				
 			}
 		}
 		

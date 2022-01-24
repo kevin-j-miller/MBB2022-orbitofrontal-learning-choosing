@@ -1,4 +1,7 @@
-function params = fit_stan_model(standata, modelname)
+function params = fit_stan_model(standata)
+
+model_file = fullfile(code_path, 'library', 'behavior_analysis','stan_models','multiagent_model_single.stan');
+
 
 % Stop fitting when at least criterion fits are within epsilon normalized
 % likelihood of the best fit
@@ -19,13 +22,14 @@ while ~done
     
     try
         
-        working_dir = fullfile(files_path, ['stan_working_dir_' datestr(now,'YYYYMMDD_hhmmss_FFF')]);
-        mkdir(working_dir);
+    pause(rand); % Pause for random fraction of a second to make extra sure we're not in the same millisecond as another process
+    wd = ['working_folders/',datestr(now,'yyyymmdd_HHMMSSFFF')];
+    mkdir(wd);
         
-        fit = stan('file', modelname, 'data', standata, 'working_dir', working_dir, 'verbose', false, 'method', 'optimize');
+        fit = stan('file', model_file, 'data', standata, 'working_dir', wd, 'verbose', false, 'method', 'optimize');
         fit.block;
         
-        rmdir(working_dir,'s')
+        rmdir(wd,'s')
         
         params_fit = fit.extract;
         
@@ -40,7 +44,7 @@ while ~done
         
     catch err
         fprintf([err.identifier, '\n', err.message,'\n']);
-        if exist(working_dir, 'file')
+        if exist(wd, 'file')
         rmdir(working_dir,'s')
         end
     end

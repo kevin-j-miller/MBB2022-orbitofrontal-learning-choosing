@@ -1,0 +1,9 @@
+%% Process data
+fit_behavioral_models
+
+%% Create figure panels
+create_panels_fig1_behavior_overview
+
+create_panels_fig2_diagnosing_planning
+
+create_panels_fig2_s1_all_rat_glms
