@@ -18,83 +18,74 @@ ephys_rats = find(ratdata_conditions == 3);
 
 %% Run behavior regressions
 nBack = 5;
-betas_all = [];
+example_rat_ind = 13;
 
-for rat_i = 1:length(opto_rats)
-    
-    ratdata = ratdatas_all(opto_rats(rat_i));
-    results = twostep_glm(ratdata, nBack, 0);
-    betas_all = [betas_all, results.betas];
-    mb_opto(rat_i) = results.mb_ind;
-    mf_opto(rat_i) = results.mf_ind;
-    
-end
+for rat_i = 1:length(ratdatas_all)
+    ratdata = ratdatas_all(rat_i);
+    glm_results(rat_i) = twostep_glm(ratdata, nBack, 0);   
 
-example_rat_ind = 4;
-
-for rat_i = 1:length(sham_rats)
-    ratdata = ratdatas_all(sham_rats(rat_i));
-    results = twostep_glm(ratdata, nBack, 0);
-    betas_all = [betas_all, results.betas];
-    
-    mb_sham(rat_i) = results.mb_ind;
-    mf_sham(rat_i) = results.mf_ind;
-    
-    
     if rat_i == example_rat_ind
         twostep_glm(ratdata, nBack, 1);
         title('Example Rat')
         
-        print_svg('fig2_glm_example');
+       % print_svg('fig2_glm_example');
     end
-    
-    
+
 end
 
-for rat_i = 1:length(ephys_rats)
-    ratdata = ratdatas_all(ephys_rats(rat_i));
-    results = twostep_glm(ratdata, nBack, 0);
-    betas_all = [betas_all, results.betas];
-    
-    mb_ephys(rat_i) = results.mb_ind;
-    mf_ephys(rat_i) = results.mf_ind;
-    
-end
 
-% All rats
-plot_pretty_glms(betas_all', nBack)
+plot_pretty_glms([glm_results.betas]', nBack)
 title('All Rats')
-print_svg('fig2_glm_all');
 
-%% Scatterplot of model-based vs. model-free indices
-marker_size = 75;
-ew = 2;
+%% Plot Behavior indices
+marker_sizes = [40, 40, 60];
+ew = 1;
 l = 0.5;
+l2 = 0.8;
+jit = 0.3;
+icons = 'vds';
 
-fig = figure; hold on
+
+inds = [[glm_results.mb_ind]; ...
+    [glm_results.persev_ind]; ...
+    [glm_results.csus_ind]; ...
+    [glm_results.mf_ind]];
+
+figure; hold on
 line([-10, 10], [0, 0], 'color', 'k')
-line([0, 0], [-10, 10], 'color', 'k')
-line([-10, 10], [-10, 10], 'color', 'k')
-scatter(mb_opto, mf_opto, marker_size, 'v', 'markeredgecolor', lighten([0,0,0],l), ...
-    'markerfacecolor', 'none',...
-    'linewidth', ew)
-scatter(mb_sham, mf_sham, marker_size, 'd', 'markeredgecolor', lighten([0,0,0],l), ...
-    'markerfacecolor', 'none',...
-    'linewidth', ew)
-scatter(mb_ephys, mf_ephys, marker_size, 's', 'markeredgecolor', lighten([0,0,0],l), ...
-    'markerfacecolor', 'none',...
-    'linewidth', ew)
+
+for dataset_i = 1:3
+    rats_in_condition = ratdata_conditions == dataset_i;
+    ys = inds(:,rats_in_condition);
+    icon = icons(dataset_i);
+    nRats = sum(rats_in_condition);
+    jitter = (0:jit/(nRats-1):jit) - jit/2;
+    %ys = [params.betaMB_norm; params.betaPersev_norm; params.betaBonus_norm; params.betaBias];
+    xs = sort(repmat((1:4)',[1,nRats]) + repmat(jitter, [4,1]));
+    scatter(xs(:), ys(:), marker_sizes(dataset_i), icon, 'markeredgecolor', lighten([0,0,0],l), ...
+        'markerfacecolor', 'none',...
+        'linewidth', ew)
+    
+end
+
+errorbar(1:4, mean(inds'), sem(inds'), '.', 'color', lighten([0,0,0], l2), 'linewidth', 2)
 
 
 
-xlim([-1.5, 8])
-ylim([-1.5, 8])
-axis square
-set(gca,'fontsize',20)
-xlabel('Planning Index')
-ylabel('Model-Free Index')
+xlim([0.5, 4.5])
+set(gca,'fontsize',14)
+xlabel('')
+title('Behavioral Indices')
+ylabel('Index Value')
+set(gca, 'fontsize', 20, ...
+    'xticklabel', {'Planning', 'Perseveration', 'Novelty Preference', 'Model-Free'}, ...
+    'xtick', 1:4, ...
+    'ytick', [-2, 0, 2, 4, 6, 8])
+set(gcf, 'pos', [500, 200, 700, 600])
+xtickangle(-45)
 
-print_svg('fig2_mbmf_scatter');
+print_svg('fig2_glm_indices')
+
 
 %% Scatterplot of fit parameter values
 marker_sizes = [40, 40, 60];

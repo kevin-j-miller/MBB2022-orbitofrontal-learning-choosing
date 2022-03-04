@@ -4,8 +4,8 @@ if ~exist(fullfile(files_path, 'postprocessed_data', 'behavioral_model_fits.mat'
     fig1_fit_models
 end
 
-if ~exist(fullfile(files_path, 'figure_panels', 'Fig2_S1_individual_rat_glms'), 'dir')
-    mkdir(fullfile(files_path, 'figure_panels', 'Fig2_S1_individual_rat_glms'))
+if ~exist(fullfile(files_path, 'figure_panels', 'Fig2_S2_individual_rat_glms'), 'dir')
+    mkdir(fullfile(files_path, 'figure_panels', 'Fig2_S2_individual_rat_glms'))
 end
 
 loaded = load(fullfile(files_path, 'postprocessed_data', 'behavioral_model_fits.mat'));
@@ -30,8 +30,9 @@ for rat_i = 1:length(opto_rats)
     set(gca,'Xdir','reverse')
     box off
     ylim(ylims)
-    print_png(['Fig2_S1_individual_rat_glms/opto', num2str(rat_i)]);
-    
+    title(['Rat O', num2str(rat_i)])
+    print_svg(['Fig2_S2_individual_rat_glms/opto', num2str(rat_i)]);
+
     % For synthetic data
     p = fit_params(opto_rats(rat_i));
     params = [p.alphaMB, p.betaMB, p.alphaPersev, p.betaPersev, p.betaBonus, p.betaBias];
@@ -41,22 +42,24 @@ for rat_i = 1:length(opto_rats)
     set(gca,'Xdir','reverse')
     box off
     ylim(ylims)
-    print_png(['Fig2_S1_individual_rat_glms/opto', num2str(rat_i), '_simdata']);
+    title(['Model Fit to Rat O', num2str(rat_i)])
+    print_svg(['Fig2_S2_individual_rat_glms/opto', num2str(rat_i), '_simdata']);
 end
 
 for rat_i = 1:length(sham_rats)
     ratdata = ratdatas_all(sham_rats(rat_i));
     results = twostep_glm(ratdata);
-    
+
     mb_sham(rat_i) = results.mb_ind;
     mf_sham(rat_i) = results.mf_ind;
     legend off
     set(gca,'Xdir','reverse')
     box off
     ylim(ylims)
-    print_png(['Fig2_S1_individual_rat_glms/sham', num2str(rat_i)]);
-    
-     % For synthetic data
+    title(['Rat S', num2str(rat_i)])
+    print_svg(['Fig2_S2_individual_rat_glms/sham', num2str(rat_i)]);
+
+    % For synthetic data
     p = fit_params(sham_rats(rat_i));
     params = [p.alphaMB, p.betaMB, p.alphaPersev, p.betaPersev, p.betaBonus, p.betaBias];
     simdata = generate_simulated_data('mb_bonus_persev_bias',params,ratdata);
@@ -65,21 +68,23 @@ for rat_i = 1:length(sham_rats)
     set(gca,'Xdir','reverse')
     box off
     ylim(ylims)
-    print_png(['Fig2_S1_individual_rat_glms/sham', num2str(rat_i), '_simdata']);
+    title(['Model Fit to Rat S', num2str(rat_i)])
+    print_svg(['Fig2_S2_individual_rat_glms/sham', num2str(rat_i), '_simdata']);
 end
 
 for rat_i = 1:length(ephys_rats)
     ratdata = ratdatas_all(ephys_rats(rat_i));
     results = twostep_glm(ratdata);
-    
+
     mb_ephys(rat_i) = results.mb_ind;
     mf_ephys(rat_i) = results.mf_ind;
     legend off
     set(gca,'Xdir','reverse')
     box off
     ylim(ylims)
-    print_png(['Fig2_S1_individual_rat_glms/ephys', num2str(rat_i)]);
-    
+    title(['Rat E', num2str(rat_i)])
+    print_svg(['Fig2_S2_individual_rat_glms/ephys', num2str(rat_i)]);
+
     % For synthetic data
     p = fit_params(ephys_rats(rat_i));
     params = [p.alphaMB, p.betaMB, p.alphaPersev, p.betaPersev, p.betaBonus, p.betaBias];
@@ -89,5 +94,6 @@ for rat_i = 1:length(ephys_rats)
     set(gca,'Xdir','reverse')
     box off
     ylim(ylims)
-    print_png(['Fig2_S1_individual_rat_glms/ephys', num2str(rat_i), '_simdata']);
+    title(['Model Fit to Rat E', num2str(rat_i)])
+    print_svg(['Fig2_S2_individual_rat_glms/ephys', num2str(rat_i), '_simdata']);
 end

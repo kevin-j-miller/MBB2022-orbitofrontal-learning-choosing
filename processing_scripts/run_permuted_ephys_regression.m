@@ -3,7 +3,7 @@ function run_permuted_ephys_regression(cell_i)
 loaded = load('ofc_ephys_preprocessed');
 
 celldata = loaded.celldatas(cell_i);
-ensemble = loaded.ensemble;
+ensemble = loaded.spike_ensemble;
 clear loaded
 
 
