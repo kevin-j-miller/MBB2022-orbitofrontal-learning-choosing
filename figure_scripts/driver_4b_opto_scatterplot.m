@@ -1,4 +1,11 @@
-loaded = load('opto_glm_results');
+opto_file = fullfile(files_path, 'postprocessed_data', 'opto_results_glm.mat');
+
+if ~exist(opto_file,'file')
+    opto_processing;
+end
+
+loaded = load(opto_file);
+
 results = loaded.results;
 results_sham = loaded.results_sham;
 
@@ -36,11 +43,10 @@ set(gca,...
 xlabel('Planning Index')
 ylabel('Model-Free Index')
 
-print('figures_raw/s5_opto_mbmf','-dsvg')
 
 %% Persev 
 
-jit = 0.1;
+jit = 0.25;
 
 % Make figure
 figure; hold on;
@@ -79,7 +85,7 @@ scatter(xs,ys,100,'V','markerfacecolor',lighten(color,0.6),'markeredgecolor','no
 errorbar([0,4,5],[0,mean(ys),0],[0,sem(ys),0],'.','color',color,'linewidth',5); % Padding to equal out errorbar tab lengths
 
 xlim([0.5, 4.5])
-ylabel('Effect of previous choices')
+ylabel('Perseverative Index')
 
 set(gca,...
     'fontsize', 14,...
@@ -87,4 +93,151 @@ set(gca,...
     'xtick', [1,2,3,4], ...
     'xticklabel', {'Control','Reward-Period','Choice-Period','Both-Periods'})
 
-print('figures_raw/s5_opto_pers','-dsvg')
+
+%print_svg('Fig4-1_opto_pers','-dsvg')
+
+
+%% NP
+
+
+% Make figure
+figure; hold on;
+line([0,4],[0,0],'color',[0,0,0])
+
+nRats = 9;
+jitter = (0:jit/(nRats-1):jit) - jit/2;
+
+xs = jitter + 1;
+ys = results.np_cntrl;
+color = [0,0,0];
+
+scatter(xs,ys,100,'V','markerfacecolor',lighten(color,0.6),'markeredgecolor','none');
+errorbar([0,1,5],[0,mean(ys),0],[0,sem(ys),0],'.','color',color,'linewidth',5); % Padding to equal out errorbar tab lengths
+
+xs = jitter + 2;
+ys = results.np_rew;
+color = rew_color;
+
+scatter(xs,ys,100,'V','markerfacecolor',lighten(color,0.6),'markeredgecolor','none');
+errorbar([0,2,5],[0,mean(ys),0],[0,sem(ys),0],'.','color',color,'linewidth',5); % Padding to equal out errorbar tab lengths
+
+xs = jitter + 3;
+ys = results.np_ch;
+color = ch_color;
+
+scatter(xs,ys,100,'V','markerfacecolor',lighten(color,0.6),'markeredgecolor','none');
+errorbar([0,3,5],[0,mean(ys),0],[0,sem(ys),0],'.','color',color,'linewidth',5); % Padding to equal out errorbar tab lengths
+
+
+xs = jitter + 4;
+ys = results.np_both;
+color = both_color;
+
+scatter(xs,ys,100,'V','markerfacecolor',lighten(color,0.6),'markeredgecolor','none');
+errorbar([0,4,5],[0,mean(ys),0],[0,sem(ys),0],'.','color',color,'linewidth',5); % Padding to equal out errorbar tab lengths
+
+xlim([0.5, 4.5])
+ylabel('Novelty Preference Index')
+
+set(gca,...
+    'fontsize', 14,...
+    'ytick', [0, 4, 8], ...
+    'xtick', [1,2,3,4], ...
+    'xticklabel', {'Control','Reward-Period','Choice-Period','Both-Periods'})
+
+
+%% Model-Free
+
+
+% Make figure
+figure; hold on;
+line([0,4],[0,0],'color',[0,0,0])
+
+nRats = 9;
+jitter = (0:jit/(nRats-1):jit) - jit/2;
+
+xs = jitter + 1;
+ys = results.mf_cntrl;
+color = [0,0,0];
+
+scatter(xs,ys,100,'V','markerfacecolor',lighten(color,0.6),'markeredgecolor','none');
+errorbar([0,1,5],[0,mean(ys),0],[0,sem(ys),0],'.','color',color,'linewidth',5); % Padding to equal out errorbar tab lengths
+
+xs = jitter + 2;
+ys = results.mf_rew;
+color = rew_color;
+
+scatter(xs,ys,100,'V','markerfacecolor',lighten(color,0.6),'markeredgecolor','none');
+errorbar([0,2,5],[0,mean(ys),0],[0,sem(ys),0],'.','color',color,'linewidth',5); % Padding to equal out errorbar tab lengths
+
+xs = jitter + 3;
+ys = results.mf_ch;
+color = ch_color;
+
+scatter(xs,ys,100,'V','markerfacecolor',lighten(color,0.6),'markeredgecolor','none');
+errorbar([0,3,5],[0,mean(ys),0],[0,sem(ys),0],'.','color',color,'linewidth',5); % Padding to equal out errorbar tab lengths
+
+
+xs = jitter + 4;
+ys = results.mf_both;
+color = both_color;
+
+scatter(xs,ys,100,'V','markerfacecolor',lighten(color,0.6),'markeredgecolor','none');
+errorbar([0,4,5],[0,mean(ys),0],[0,sem(ys),0],'.','color',color,'linewidth',5); % Padding to equal out errorbar tab lengths
+
+xlim([0.5, 4.5])
+ylabel('Model-Free Index')
+
+set(gca,...
+    'fontsize', 14,...
+    'ytick', [0, 4, 8], ...
+    'xtick', [1,2,3,4], ...
+    'xticklabel', {'Control','Reward-Period','Choice-Period','Both-Periods'})
+
+
+%% Planning
+
+% Make figure
+figure; hold on;
+line([0,4],[0,0],'color',[0,0,0])
+
+nRats = 9;
+jitter = (0:jit/(nRats-1):jit) - jit/2;
+
+xs = jitter + 1;
+ys = results.mb_cntrl;
+color = [0,0,0];
+
+scatter(xs,ys,100,'V','markerfacecolor',lighten(color,0.6),'markeredgecolor','none');
+errorbar([0,1,5],[0,mean(ys),0],[0,sem(ys),0],'.','color',color,'linewidth',5); % Padding to equal out errorbar tab lengths
+
+xs = jitter + 2;
+ys = results.mb_rew;
+color = rew_color;
+
+scatter(xs,ys,100,'V','markerfacecolor',lighten(color,0.6),'markeredgecolor','none');
+errorbar([0,2,5],[0,mean(ys),0],[0,sem(ys),0],'.','color',color,'linewidth',5); % Padding to equal out errorbar tab lengths
+
+xs = jitter + 3;
+ys = results.mb_ch;
+color = ch_color;
+
+scatter(xs,ys,100,'V','markerfacecolor',lighten(color,0.6),'markeredgecolor','none');
+errorbar([0,3,5],[0,mean(ys),0],[0,sem(ys),0],'.','color',color,'linewidth',5); % Padding to equal out errorbar tab lengths
+
+
+xs = jitter + 4;
+ys = results.mb_both;
+color = both_color;
+
+scatter(xs,ys,100,'V','markerfacecolor',lighten(color,0.6),'markeredgecolor','none');
+errorbar([0,4,5],[0,mean(ys),0],[0,sem(ys),0],'.','color',color,'linewidth',5); % Padding to equal out errorbar tab lengths
+
+xlim([0.5, 4.5])
+ylabel('Planning Index')
+
+set(gca,...
+    'fontsize', 14,...
+    'ytick', [0, 4, 8], ...
+    'xtick', [1,2,3,4], ...
+    'xticklabel', {'Control','Reward-Period','Choice-Period','Both-Periods'})

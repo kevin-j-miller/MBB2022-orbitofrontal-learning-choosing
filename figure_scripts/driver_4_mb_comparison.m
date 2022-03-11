@@ -1,6 +1,14 @@
-loaded = load('opto_glm_results');
+opto_file = fullfile(files_path, 'postprocessed_data', 'opto_results_glm.mat');
+
+if ~exist(opto_file,'file')
+    opto_processing;
+end
+
+loaded = load(opto_file);
+
 results = loaded.results;
 results_sham = loaded.results_sham;
+
 
 %% Comparison plot MB
 
@@ -20,14 +28,10 @@ figure; hold on;
 line([0,4],[0,0],'color',[0,0,0])
 
 % Add active rats
-nRats = length(results.fits_extracted);
+nRats = length(rew_effect);
 jitter = (0:jit/(nRats-1):jit) - jit/2;
 xs = repmat((1:3)',[1,nRats]) + repmat(jitter,[3,1]) - offset;
 ys = [rew_effect; ch_effect; both_effect;];
-
-rew_color = [159, 54, 41]/255;
-ch_color = [31, 119, 82]/255;
-both_color = [82, 61, 139]/255;
 
 colors = {rew_color; ch_color; both_color};
 ymax = max(ys(:)) + 5;
@@ -40,7 +44,7 @@ errorbar([0,x_i-offset,4],[0,mean(ys(x_i,:)),0],[0,sem(ys(x_i,:)),0],'.','color'
 end
 
 % Add control rats
-nRats = length(results_sham.fits_extracted);
+nRats = length(rew_effect_sham);
 jitter = (0:jit/(nRats-1):jit) - jit/2;
 xs = repmat((1:3)',[1,nRats]) + repmat(jitter,[3,1]) + offset;
 ys = [rew_effect_sham; ch_effect_sham; both_effect_sham];

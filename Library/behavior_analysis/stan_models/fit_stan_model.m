@@ -13,30 +13,27 @@ tries = 0;
 fit_i = 1;
 while ~done
     tries = tries + 1;
-    
-    
+
+
     if tries > 20 && fit_i ==1
         error('Unable to fit model. Tried 20 times and received an error each time')
     end
-    
-    
+
+
     try
-        
-    pause(rand); % Pause for random fraction of a second to make extra sure we're not in the same millisecond as another process
-    wd = ['working_folders/',datestr(now,'yyyymmdd_HHMMSSFFF')];
-    mkdir(wd);
-        
-<<<<<<< HEAD
+
+        pause(rand); % Pause for random fraction of a second to make extra sure we're not in the same millisecond as another process
+
+        wd = fullfile('wd_', datestr(now,'yyyymmdd_HHMMSSFFF'));        
+        mkdir(wd);
+
         fit = stan('file', model_file, 'data', standata, 'working_dir', wd, 'verbose', false, 'method', 'optimize');
-=======
-        fit = stan('file', modelname, 'data', standata, 'working_dir', working_dir, 'verbose', true, 'method', 'optimize');
->>>>>>> d2723f57b452bf30aa463f9500af6d421d486df9
         fit.block;
-        
+
         rmdir(wd,'s')
-        
+
         params_fit = fit.extract;
-        
+
         if ~isempty(params_fit)
             params_all_fits(fit_i) = params_fit;
             normLik_fit = exp(params_fit.log_probs / standata.nTrials);
@@ -45,14 +42,14 @@ while ~done
             done = sum(abs(normLiks_fit - best_normLik) < epsilon) >= criterion || length(normLiks_fit) > 30;
             fit_i = fit_i + 1;
         end
-        
+
     catch err
         fprintf([err.identifier, '\n', err.message,'\n']);
         if exist(wd, 'file')
-        rmdir(working_dir,'s')
+            rmdir(working_dir,'s')
         end
     end
-    
+
 end
 
 
