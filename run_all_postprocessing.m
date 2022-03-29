@@ -1,7 +1,10 @@
-%% SCRIPTS TO RUN DATA POSTPROCESSING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SCRIPTS TO RUN DATA POSTPROCESSING %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Miller, Botvinick, and Brody, 2022
+% Requires preprocessed data files. Produces post-processed data files.
 
-%% Check that the datasets are visible
+% Check that the datasets are visible
 assert(exist(fullfile(files_path, 'preprocessed_data', 'ofc_learning_choosing_dataset_opto.mat'), 'file') == 2, ...
     'Unable to find opto dataset. Please find "ofc_learning_choosing_dataset_opto.mat", and place it in the Matlab path.')
 
@@ -9,16 +12,29 @@ assert(exist(fullfile(files_path, 'preprocessed_data', 'ofc_learning_choosing_da
     'Unable to find ephys dataset. Please find "ofc_learning_choosing_dataset_opto.mat", and place it in the Matlab path.')
 
 
-%% Fit behavioral models
-% Requires 'ofc_learning_choosing_dataset_ephys' and 'ofc_learning_choosing_dataset_opto'
+%%%%%%%%%%%%%%%% 
+%%  BEHAVIOR  %%
+%%%%%%%%%%%%%%%%
 
 % Fits the behavioral model
-
 % Creates 'behavioral_model_fits.mat', containing fit parameters for each rat
-
 fit_behavioral_models
 
-%% Bin up ephys
+
+%%%%%%%%%%%%%%%%%%%%
+%%  OPTOGENETICS  %%
+%%%%%%%%%%%%%%%%%%%%
+
+% Fits trial-history glm models to the opto dataset
+% Creates opto_results_glm.mat
+fit_opto_glms
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%  ELECTROPHYSIOLOGY  %%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Bin up the data
 % Requires 'ofc_learning_choosing_dataset_ephys.mat', containing behavioral data and spike-sorted ephys data
 % Requires 'behavioral_model_fits.mat', containing fit parameters
 
@@ -29,6 +45,7 @@ fit_behavioral_models
 % Creates 'ofc_celldatas_ensemble.mat', 
 
 bin_organize_ephys_data; 
+
 
 %% Run regressions
 % Requires 'ofc_ephys_preprocessed'. 

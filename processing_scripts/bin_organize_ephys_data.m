@@ -1,7 +1,7 @@
-addpath(genpath(code_path))
-
+%% Load the dataset
 loaded = load(fullfile(files_path, 'preprocessed_data', 'ofc_learning_choosing_dataset_ephys.mat'));
 ephys_data = loaded.ratdatas;
+clear loaded
 
 %% Check the model fits exist
 % Re-run them if they do not
@@ -17,9 +17,10 @@ param_ratnames = loaded.ratdata_ratnames;
 
 %% Re-organize the data into celldatas
 celldatas = [];
-nCells = length(ephys_data);
+nSess = length(ephys_data);
 
-for sess_i = 1:nCells
+fprintf('Adding value information to dataset \n');
+for sess_i = 1:nSess
     % Pick the data from a particular behavioral session
     sessdata = ephys_data(sess_i);
     
@@ -31,17 +32,24 @@ for sess_i = 1:nCells
     
     % Compute the trial-by-trial model-derived values for this session,
     % using there parameters
-    values = values_multiagent(0, model_params.alphaMB, 0, ...
-        model_params.betaMB, model_params.betaBonus, 0, ...
-        model_params.betaPersev, model_params.betaBias, sessdata);
+    values = values_multiagent(model_params.alphaMB, ...
+        model_params.alphaPersev,...
+        model_params.betaMB, ...
+        model_params.betaPersev,...
+        model_params.betaBonus, ...
+        model_params.betaBias, ...
+        sessdata);
     
     % Add them as new fields to the session data structure
     sessdata.Q1mbs = values.Q1mbs;
     sessdata.Q2mbs = values.Q2mbs;
-    sessdata.Qeff = values.Qeff;
-    sessdata.Q_choice = values.Q_choice;
-    sessdata.Q_chosen = values.Q_chosen;
-    sessdata.Q_outcome = values.Q_outcome;
+    sessdata.Qeffs = values.Qeffs;
+    sessdata.Qhabits = values.Qhabits;
+
+    sessdata.Qmb_choice = values.Qmb_choice;
+    sessdata.Qmb_chosen = values.Qmb_chosen;
+    sessdata.Qeff_chosen = values.Qeff_chosen;
+    sessdata.Qmb_outcome = values.Qmb_outcome;
     
     % Divide the session data up into separate structures for each recorded
     % unit
@@ -85,9 +93,13 @@ for lock_i = 1:4
 end
 
 % Compute spike count matrix
-for cell_i = 1:length(celldatas)
-    tic
-    celldata = celldatas(cell_i);
+nUnits = length(celldatas);
+fprintf(['Computing Binned Spike Count Ensemble for ', num2str(nUnits), ' units\n']);
+fprintf(1,'Units done: %3i\n', 0);
+for unit_i = 1:nUnits
+    fprintf(1,'\b\b\b\b %3i', unit_i);
+    
+    celldata = celldatas(unit_i);
     spiketimes = celldata.spiketimes;
     % Loop over trials, adding spike counts to the matrix
     for trial_i = 1:(celldata.nTrials - 1)
@@ -101,13 +113,14 @@ for cell_i = 1:length(celldatas)
                 bins_lock = time_lock + bins;
                 hist_results = histc(spiketimes, bins_lock);
                 spikes = hist_results(1:end-1);
-                spike_ensemble{lock_i}(cell_i,trial_i,:) = spikes(:);
+                spike_ensemble{lock_i}(unit_i,trial_i,:) = spikes(:);
             end
             
         end
     end
-    toc
+    
 end
+fprintf(1,'\n');
 
 %% Save postprocessed data
 
