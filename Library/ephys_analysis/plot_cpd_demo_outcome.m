@@ -9,13 +9,13 @@ event_colors = [159, 41, 110; ...
 
 good_trials = ~celldata.bad_timing(:) & ~celldata.to_exclude(:);
 
-Q = celldata.Q_outcome';
+Q = celldata.Qmb_outcome';
 
 
 spiketimes = celldata.spiketimes;
 
 %% Raster
-event_times{1} = celldata.s2_times(good_trials);
+event_times = {celldata.s2_times(good_trials)};
 fig_raster = plot_raster(spiketimes, window, event_times, [0.5, 0.5, 0.5]);
 
 %% PSTH Outcome Value
@@ -79,15 +79,18 @@ set(fig, 'pos', [650, 100, 500, 700])
 
 h(1)=subplot(4,1,1);
 ylabel('Trials')
-ylim([0, celldata.nTrials])
+xlim(window)
+ylim([0, sum(good_trials)])
 set(gca, 'fontsize', 14)
 
 h(2)=subplot(4,1,2);
+xlim(window)
 ylim([0, axmax])
 set(gca, 'fontsize', 14)
 ylabel('Rate (sp/s)')
 
 h(3)=subplot(4,1,3);
+xlim(window)
 ylim([0, axmax])
 set(gca, 'fontsize', 14)
 

@@ -43,5 +43,5 @@ set(gca,'fontsize',16);
 xlabel('Time from Event (s)','fontsize',20);
 ylabel('Firing Rate (sp/s)','fontsize',20);
 
-axmax = 1.05*max(rates(:) + err(:));
+axmax = 1.05*max(rates(:) + err(:)) + 1;
 end

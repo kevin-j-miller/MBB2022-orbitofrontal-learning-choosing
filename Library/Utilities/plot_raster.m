@@ -20,7 +20,8 @@ end
 
 
 set(gca,'fontsize',16);
-ylim([0, max(ys)])
+ylim([0, y])
+xlim([min(window), max(window)])
 xlabel('Time from Event (s)','fontsize',20);
 ylabel('Trials','fontsize',20);
 

@@ -9,7 +9,7 @@ event_colors = [41, 152, 159;...
 
 good_trials = ~celldata.bad_timing(:) & ~celldata.to_exclude(:);
 
-Q = celldata.Q_choice';
+Q = celldata.Qmb_choice';
 
 
 spiketimes = celldata.spiketimes;
@@ -65,21 +65,21 @@ set(fig, 'pos', [650, 100, 500, 700])
 
 h(1)=subplot(4,1,1);
 ylabel('Trials')
-ylim([0, celldata.nTrials])
+xlim(window)
+ylim([0, sum(good_trials)])
 set(gca, 'fontsize', 14)
 
 h(2)=subplot(4,1,2);
 ylim([0, axmax])
+xlim(window)
 set(gca, 'fontsize', 14)
 ylabel('Rate (sp/s)')
 
 
 h(3)=subplot(4,1,3);
 ylim([0, axmax])
+xlim(window)
 set(gca, 'fontsize', 14)
-ylabel('Rate (sp/s)')
-
-
 ylabel('Rate (sp/s)')
 
 h(5)=subplot(4,1,4);
