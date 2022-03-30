@@ -58,11 +58,10 @@ run_ephys_regressions;
 %% Run permuted regressions
 % Run compute_permuted_sse for each unit
 % Requires ofc_ephys_preprocessed
-% Creates permuted_sse/permuted_sse_cell_###
-% If you run this single-threaded, it will take a long time. 
-% I parallelized it using the PNI cluster, 'Spock'
+% Creates circshift_SSEs/circhift_sse_unit_###
+% This takes a while to run (~tens of hours)
 
-for unit_i = 1:477
+parfor unit_i = 8:477
     run_permuted_ephys_regression(unit_i)
 end
 
