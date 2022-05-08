@@ -1,5 +1,5 @@
-sse = load('ofc_SSEs.mat');
-p = load('permuted_p_values.mat');
+sse = load(fullfile(files_path, 'postprocessed_data', 'ofc_SSEs.mat'));
+%p = load('permuted_p_values.mat');
 
 % Check fraction excluded
 excluded_frac = mean(sse.bad_glm)

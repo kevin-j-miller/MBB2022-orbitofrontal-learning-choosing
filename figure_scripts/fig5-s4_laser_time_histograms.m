@@ -1,5 +1,13 @@
-loaded = load('C:\Users\kevin\Documents\Code_for_Experiments\twostep_opto\opto_dataset');
+%% Load the dataset
 
+opto_data_file = fullfile(files_path, 'preprocessed_data', 'ofc_learning_choosing_dataset_opto.mat');
+
+assert(exist(opto_data_file, 'file') == 2, ...
+    'Unable to find opto dataset. Please find "ofc_learning_choosing_dataset_opto.mat", and place it in the Matlab path.')
+
+loaded = load(opto_data_file);
+
+%%
 
 lt_rew = [];
 lt_ch = [];
@@ -25,7 +33,7 @@ title('Both Periods Inhibition','fontsize',30)
 xlim([0,16])
 ylim([0,0.7])
 box off
-print(['C:\Users\kevin\Documents\Papers\OFC phys-opto\Figures\FigSn_laser_time_histograms\both.png'],'-dpng');
+print_svg('Fig5-4_laser_durations_both');
 
 
 figure;
@@ -37,7 +45,7 @@ title('Choice Period Inhibition','fontsize',30)
 xlim([0,16])
 ylim([0,0.7])
 box off
-print(['C:\Users\kevin\Documents\Papers\OFC phys-opto\Figures\FigSn_laser_time_histograms\choice.png'],'-dpng');
+print_svg('Fig5-4_laser_durations_choice');
 
 figure;
 histogram(lt_rew,edges,'normalization','probability','edgecolor','none','facealpha',1,'facecolor', [159, 54, 41] / 255)
@@ -48,4 +56,4 @@ title('Outcome Period Inhibition','fontsize',30)
 xlim([0,16])
 ylim([0,0.7])
 box off
-print(['C:\Users\kevin\Documents\Papers\OFC phys-opto\Figures\FigSn_laser_time_histograms\rew.png'],'-dpng');
+print_svg('Fig5-4_laser_durations_outcome');

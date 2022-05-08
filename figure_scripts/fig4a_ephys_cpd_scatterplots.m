@@ -18,7 +18,8 @@ for cell_i = 1:nCells
         end
 end
 
-bad_cpd = squeeze(any(any(isnan(cpd_entry_true),1),3)); % CPD can be NaN if the heldout SSE is zero. This normally happens if there are no spikes at all in a bin
+% CPD can be NaN if the heldout SSE is zero. This happens if there are no spikes at all in a bin
+bad_cpd = squeeze(any(any(isnan(cpd_entry_true),1),3)); 
 
 %% Figure and stats for outcome value (at outcome) vs. chosen value (at choice)
 

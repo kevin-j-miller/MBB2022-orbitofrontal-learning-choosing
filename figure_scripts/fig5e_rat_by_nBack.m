@@ -1,7 +1,14 @@
+opto_file = fullfile(files_path, 'postprocessed_data', 'opto_results_glm.mat');
 
-loaded = load('opto_glm_results');
+if ~exist(opto_file,'file')
+    opto_processing;
+end
+
+loaded = load(opto_file);
+
 results = loaded.results;
 results_sham = loaded.results_sham;
+
 
 %% Plot by nBack
 nBack = 3;

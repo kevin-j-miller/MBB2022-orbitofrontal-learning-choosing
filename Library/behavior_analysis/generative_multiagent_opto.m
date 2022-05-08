@@ -1,4 +1,4 @@
-function modeldata = generative_multiagent_opto(alphaMB_cntrl,betaMB_cntrl,betaBonus,betaPersev,bias,alpha_stims,beta_stims,task)
+function modeldata = generative_multiagent_opto(alphaMB_cntrl,betaMB_cntrl,betaBonus,alphaPersev,betaPersev,bias,alpha_stims,beta_stims,task)
 
 % Generate simulated data using a mixture model.  Model contains
 % model-based agent, model-free agent, and one-trial-back common-stay,
@@ -23,7 +23,7 @@ Qmf = [0.5,0.5]; % model-free agent's initial values
 Q2mb = [0.5,0.5]; % Initialize q-values to 0.5.  These are *second-step* Q-values
 Qbonus = [0.5,0.5];
 Q2wsls = [0,0];
-Qpersev = [0,0];
+Qpersev = [0.5,0.5];
 Qbias = [bias, -bias];
 alphaMB(1) = alphaMB_cntrl;
 alphaMB(2) = 1 - alphaMB_cntrl;
@@ -139,8 +139,8 @@ for trial_i = 1:nTrials
     end
     
     % set up persev
-    Qpersev(choice_ind) = 1;
-    Qpersev(nonchoice_ind) = 0;
+    Qpersev(choice_ind) = (1 - alphaPersev) * Qpersev(choice_ind) + alphaPersev;
+    Qpersev(nonchoice_ind) = (1 - alphaPersev) * Qpersev(nonchoice_ind);
     
     choices(trial_i) = choice;
     outcomes(trial_i) = outcome;
