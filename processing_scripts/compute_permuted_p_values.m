@@ -33,7 +33,7 @@ end
 
 %% Unit-wise p-values
 % Load necessary data
-sse = load('ofc_SSEs.mat');
+sse = load(fullfile(files_path, 'postprocessed_data', 'ofc_SSEs.mat'));
 
 loaded = load('ofc_SSEs_perm');
 sse_perms = loaded.sse_perms;

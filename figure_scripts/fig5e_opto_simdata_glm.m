@@ -102,5 +102,7 @@ for data_i = 1:3
 
 
     drawnow
+    print_svg(['fig5e_', num2str(data_i)])
+
 end
 

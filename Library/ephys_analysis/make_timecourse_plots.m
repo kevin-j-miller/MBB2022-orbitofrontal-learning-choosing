@@ -54,3 +54,5 @@ ylim([0,ymax]); xlim([-2,2])
 xlabel('Time from Poke (s)','fontsize',16);
 title('Choice Port (post-ITI)','fontsize',20);
 set(gca,'fontsize',20)
+
+set(gcf, 'pos', [50, -500, 1800, 400])
