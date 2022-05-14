@@ -1,5 +1,3 @@
-
-
 %% Unit-wise p-values
 % Load necessary data
 sse = load(fullfile(files_path, 'postprocessed_data', 'ofc_SSEs.mat'));
@@ -24,6 +22,7 @@ for lock_i = 1:4
 end
 
 %% Loop over cells, populate the structures
+fprintf('')
 for unit_i = 1:nUnits
     fprintf(1,'\b\b\b\b %3i', unit_i);
         
@@ -123,11 +122,3 @@ plots.colors = colors_val;
 plots.err = pop_thresh;
 
 plots_value = make_timecourse_plots(plots);
-% 
-% for lock_i = 1:4
-%     figure(plots_task(lock_i))
-%     print([pwd,'\figures_raw\fraction_significant_task_', num2str(lock_i), '.svg'],'-dsvg')
-%     figure(plots_value(lock_i))
-%     print([pwd,'\figures_raw\fraction_significant_value_', num2str(lock_i), '.svg'],'-dsvg')
-% end
-% close all
