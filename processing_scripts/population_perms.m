@@ -22,7 +22,6 @@ for lock_i = 1:4
 
     nBins = length(sse.bin_mids_by_lock{lock_i});
     cpd_pop_perm = NaN(nPerms, nRegs, nBins);
-    cpd_pop_perms = [];
     sse_pop_perm_full_cell = NaN(nUnits, nBins);
     sse_pop_perm_leaveout_cell = NaN(nUnits, nRegs, nBins);
     
@@ -59,7 +58,7 @@ fprintf(1,'\n');
     differences = repmat(reshape(cpd_true, [1,size(cpd_true)]), [nPerms,1,1]) - cpd_pop_perm;
     
     num_perms_above_real{lock_i} = squeeze(sum(differences < 0));
-    cpd_pop_perms = [cpd_pop_perms, cpd_pop_perm(:)];
+    corrected_cpd{lock_i} = squeeze(sum(differences));
 end
 toc
 
@@ -69,6 +68,6 @@ end
 
 save(fullfile(files_path, 'postprocessed_data', 'permuted_population_cpds', ...
      ['permuted_population_cpds_' num2str(job_id)]), ...
-     'num_perms_above_real', 'nPerms', 'cpd_pop_perms')
+     'num_perms_above_real', 'nPerms', 'corrected_cpd')
 
 end

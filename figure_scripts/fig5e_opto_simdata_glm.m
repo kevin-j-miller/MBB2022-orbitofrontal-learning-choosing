@@ -93,9 +93,13 @@ for data_i = 1:3
 
 
     yticks = transform([0:0.1:1, (1:10)+1]);
-    ylim(transform([-offset, 6.4]))
-    xlim([0.5,nBack + 0.5]); set(gca,'fontsize',20, 'ytick', yticks,'yticklabels',{'0','0.1','','0.3','','','','','','','1.0','','3.0','','','',''})
-    xlabel('Trials Ago','fontsize',20); ylabel('Contribution to Planning Index','fontsize',20);
+ylim([transform(-0.015), transform(6.4)])
+xlim([0.8,nBack + 0.2]); 
+    set(gca,'fontsize',20, ...
+        'ytick', yticks,'yticklabels',{'0','0.1','','0.3','','','','','','','1.0','','3.0','','','',''},...
+        'xtick', [1,2,3], 'xticklabels',{'0','-1','-2'})
+    xlabel({'Outcomes Relative' 'to Disruption'},'fontsize',20); 
+    ylabel('','fontsize',20);
     set(gca,'Xdir','reverse')
 
     [~,p_values(data_i,:)] = ttest(cntrl_by_nBack - rew_by_nBack)

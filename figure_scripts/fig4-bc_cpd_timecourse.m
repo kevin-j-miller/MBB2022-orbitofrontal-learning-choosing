@@ -40,17 +40,19 @@ for file_i = 1:length(filenames)
 
         for lock_i = 1:4
             num_perms_above_real{lock_i} = num_perms_above_real{lock_i} + loaded.num_perms_above_real{lock_i};
+            corrected_cpd_sum{lock_i} = loaded.corrected_cpd{lock_i};
         end
 
         nPerms = nPerms + loaded.nPerms;
-
+        
     catch
         disp(['Unable to process file ' filenames(file_i).name]);
     end
 end
 
 for lock_i = 1:4
-    p_pop_timecourse{lock_i} = num_perms_above_real{lock_i} / nPerms;
+    p_pop_timecourse{lock_i} = (num_perms_above_real{lock_i}) / nPerms;
+    corrected_cpd{lock_i} = corrected_cpd_sum{lock_i} / nPerms;
 end
 
 %% Task variables plot
@@ -58,10 +60,10 @@ end
 
 plots.xs = sse.bin_mids_by_lock;
 for lock_i = 1:4
-    plots.ys{lock_i} = cpd{lock_i}(1:end-3,:);
+    plots.ys{lock_i} = corrected_cpd{lock_i}(1:end-3,:);
 end
 plots.colors = colors_task;
-plots.err = 0;
+plots.err = 0; %prctile(loaded.cpd_pop_perms, 100*sig_thresh);
 
 figs = make_timecourse_plots(plots)
 
@@ -75,8 +77,9 @@ for lock_i = 1:4
     subplot(1,4,lock_i)
     for order_i = 1:7
         reg_i = dot_order(order_i);
-        ylim([0, 14])
-        scatter(sse.bin_mids_by_lock{lock_i}(sig_bins(:,reg_i)), (14-0.25*order_i)*ones(1,sum(sig_bins(:,reg_i))), '.', 'markeredgecolor', plots.colors(reg_i, :))
+        ylim([-0.1, 13])
+        scatter(sse.bin_mids_by_lock{lock_i}(sig_bins(:,reg_i)), ...
+            (13-0.25*order_i)*ones(1,sum(sig_bins(:,reg_i))), '.', 'markeredgecolor', plots.colors(reg_i, :))
     end
 end
 
@@ -85,10 +88,10 @@ end
 
 plots.xs = sse.bin_mids_by_lock;
 for lock_i = 1:4
-    plots.ys{lock_i} = cpd{lock_i}(end-2:end,:);
+    plots.ys{lock_i} = corrected_cpd{lock_i}(end-2:end,:);
 end
 plots.colors = colors_val;
-plots.err = 0;
+plots.err =  0; %prctile(loaded.cpd_pop_perms, 100*sig_thresh);
 
 figs = make_timecourse_plots(plots);
 
@@ -98,9 +101,10 @@ for lock_i = 1:4
     sig_bins = p_pop_timecourse{lock_i}' < alpha_bonferonni;
 
     subplot(1,4,lock_i)
-    ylim([0.14, 1.23])
+    ylim([-0.1, 1])
     set(gca,'ytick',[0.5, 1])
     for reg_i = 8:10
-        scatter(sse.bin_mids_by_lock{lock_i}(sig_bins(:,reg_i)), (1.2-0.03*(reg_i-8))*ones(1,sum(sig_bins(:,reg_i))), '.', 'markeredgecolor', plots.colors(reg_i-7, :))
+        scatter(sse.bin_mids_by_lock{lock_i}(sig_bins(:,reg_i)), ...
+            (1-0.03*(reg_i-8))*ones(1,sum(sig_bins(:,reg_i))), '.', 'markeredgecolor', plots.colors(reg_i-7, :))
     end
 end
