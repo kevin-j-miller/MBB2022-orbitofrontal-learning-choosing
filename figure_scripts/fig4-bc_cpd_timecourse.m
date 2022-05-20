@@ -21,17 +21,22 @@ nBins = 20+20+70+70; % Number of total bins across all time locks
 nRegs = 10;
 alpha_bonferonni = alpha / (nBins * nRegs);
 
-% aggregate the population permutations to compute permuteation -pvalue
+%% aggregate the population permutations to compute permutation p value
 
 nRegs = 10;
 
-% Assemble the population perms from Spock
+% Assemble the population perms from different jobs
 nPerms = 0;
 num_perms_above_real = cell(1,4);
 num_perms_above_real{1} = zeros(nRegs, 20);
 num_perms_above_real{2} = zeros(nRegs, 70);
 num_perms_above_real{3} = zeros(nRegs, 70);
 num_perms_above_real{4} = zeros(nRegs, 20);
+
+corrected_cpd_sum{1} = zeros(nRegs, 20);
+corrected_cpd_sum{2} = zeros(nRegs, 70);
+corrected_cpd_sum{3} = zeros(nRegs, 70);
+corrected_cpd_sum{4} = zeros(nRegs, 20);
 
 filenames = dir(fullfile(files_path, 'postprocessed_data', 'permuted_population_cpds'));
 for file_i = 1:length(filenames)
@@ -40,7 +45,7 @@ for file_i = 1:length(filenames)
 
         for lock_i = 1:4
             num_perms_above_real{lock_i} = num_perms_above_real{lock_i} + loaded.num_perms_above_real{lock_i};
-            corrected_cpd_sum{lock_i} = loaded.corrected_cpd{lock_i};
+            corrected_cpd_sum{lock_i} = corrected_cpd_sum{lock_i} + loaded.corrected_cpd{lock_i};
         end
 
         nPerms = nPerms + loaded.nPerms;

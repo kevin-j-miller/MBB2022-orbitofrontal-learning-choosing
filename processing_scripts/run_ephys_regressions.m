@@ -19,6 +19,7 @@ clear loaded
 nCells = length(celldatas);
 sse_full_all = cell(4, nCells);
 sse_leftout = cell(4, nCells);
+weights = cell(4, nCells);
 bad_glm = false(1,nCells);
 
 tic
@@ -42,10 +43,11 @@ for lock_i = 1:4
         
         sse_full_all{lock_i, cell_i} = results.sse_full;
         sse_leftout{lock_i, cell_i} = results.sse_leftOut;
+        weights{lock_i, cell_i} = results.weights;
         
     end
 end
 toc
 
-save(fullfile(files_path, 'postprocessed_data', 'ofc_SSEs.mat'),...
-    'sse_full_all', 'sse_leftout', 'bin_mids_by_lock', 'bad_glm')
+save(fullfile(files_path, 'postprocessed_data', 'ephys_regression_results.mat'),...
+    'sse_full_all', 'sse_leftout', 'weights', 'bin_mids_by_lock', 'bad_glm')
