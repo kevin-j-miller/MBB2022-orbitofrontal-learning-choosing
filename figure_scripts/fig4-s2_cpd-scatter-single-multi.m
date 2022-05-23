@@ -1,8 +1,8 @@
-data = load('ofc_ephys_preprocessed.mat');
+data = load(fullfile(files_path, 'postprocessed_data', 'ofc_celldatas_ensemble'));
 singles = find_singles(data.celldatas);
 clear data
 
-sse = load('ofc_SSEs');
+sse = load(fullfile(files_path, 'postprocessed_data', 'ofc_SSEs.mat'));
 
 nCells = length(sse.bad_glm);
 nRegs = 10;
@@ -38,7 +38,6 @@ axmax = max([0.01; xs(:); ys(:); 10]);
 figure;
 line([axmin,axmax],[axmin,axmax],'color','black'); hold on
 scatter(xs, ys, 200, '.','markeredgecolor', [0.5, 0.5, 0.5])
-%scatter(xs(~singles), ys(~singles), 200, '.','markeredgecolor', msred)
 set(gca,'fontsize',16,'xscale','log','yscale','log')
 set(gca,'xtick',[1e-2,1e-1,1e0,1e1],'xticklabel',{'0.01%','0.1%','1%','10%'});
 set(gca,'ytick',[1e-2,1e-1,1e0,1e1],'yticklabel',{'0.01%','0.1%','1%','10%'});
@@ -47,9 +46,8 @@ ylabel({'CPD: Chosen Value'},'fontsize',16);
 xlabel({'CPD: Outcome Value'},'fontsize',16);
 xlim([axmin,axmax]); ylim([axmin,axmax]);
 title('Outcome Value vs. Chosen Value');
-print([pwd,'\figures_raw\s2_scatter_chosen_singles.svg'],'-dsvg')
 
-print([pwd,'\figures_raw\s2_scatter_hist_chosen_singles.svg'],'-dsvg')
+print_svg('fig4-2_cpd_scatter_chosen_singles')
 
 disp('Mean CPD ratio, outcome/chosen:')
 disp(mean(xs ./ ys))
@@ -73,7 +71,6 @@ axmax = max([0.01; xs(:); ys(:); 10]);
 figure;
 line([axmin,axmax],[axmin,axmax],'color','black'); hold on
 scatter(xs, ys, 200, '.','markeredgecolor', [0.5, 0.5, 0.5])
-%scatter(xs(~singles), ys(~singles), 200, '.','markeredgecolor', msred)
 set(gca,'fontsize',16,'xscale','log','yscale','log')
 set(gca,'xtick',[1e-2,1e-1,1e0,1e1],'xticklabel',{'0.01%','0.1%','1%','10%'});
 set(gca,'ytick',[1e-2,1e-1,1e0,1e1],'yticklabel',{'0.01%','0.1%','1%','10%'});
@@ -82,7 +79,8 @@ ylabel({'CPD: Choice Value Difference'},'fontsize',16);
 xlabel({'COD: Outcome Value'},'fontsize',16);
 xlim([axmin,axmax]); ylim([axmin,axmax]);
 title('Outcome Value vs. Choice Value');
-print([pwd,'\figures_raw\s2_scatter_choice_singles.svg'],'-dsvg')
+
+print_svg('fig4-2_cpd_scatter_choice_singles')
 
 
 disp('Mean CPD ratio, outcome/choice:')
@@ -108,7 +106,6 @@ axmax = max([0.01; xs(:); ys(:); 10]);
 figure;
 line([axmin,axmax],[axmin,axmax],'color','black'); hold on
 scatter(xs, ys, 200, '.','markeredgecolor', [0.5, 0.5, 0.5])
-%scatter(xs(~singles), ys(~singles), 200, '.','markeredgecolor', msred)
 set(gca,'fontsize',16,'xscale','log','yscale','log')
 set(gca,'xtick',[1e-2,1e-1,1e0,1e1],'xticklabel',{'0.01%','0.1%','1%','10%'});
 set(gca,'ytick',[1e-2,1e-1,1e0,1e1],'yticklabel',{'0.01%','0.1%','1%','10%'});
@@ -117,7 +114,8 @@ ylabel({'CPD: Chosen Value'},'fontsize',16);
 xlabel({'CPD: Outcome Value'},'fontsize',16);
 xlim([axmin,axmax]); ylim([axmin,axmax]);
 title('Outcome Value vs. Chosen Value');
-print([pwd,'\figures_raw\s2_scatter_chosen_multis.svg'],'-dsvg')
+
+print_svg('fig4-2_cpd_scatter_chosen_multis')
 
 disp('Mean CPD ratio, outcome/chosen:')
 disp(mean(xs ./ ys))
@@ -141,7 +139,6 @@ axmax = max([0.01; xs(:); ys(:); 10]);
 figure;
 line([axmin,axmax],[axmin,axmax],'color','black'); hold on
 scatter(xs, ys, 200, '.','markeredgecolor', [0.5, 0.5, 0.5])
-%scatter(xs(~singles), ys(~singles), 200, '.','markeredgecolor', msred)
 set(gca,'fontsize',16,'xscale','log','yscale','log')
 set(gca,'xtick',[1e-2,1e-1,1e0,1e1],'xticklabel',{'0.01%','0.1%','1%','10%'});
 set(gca,'ytick',[1e-2,1e-1,1e0,1e1],'yticklabel',{'0.01%','0.1%','1%','10%'});
@@ -150,7 +147,8 @@ ylabel({'CPD: Choice Value Difference'},'fontsize',16);
 xlabel({'COD: Outcome Value'},'fontsize',16);
 xlim([axmin,axmax]); ylim([axmin,axmax]);
 title('Outcome Value vs. Choice Value');
-print([pwd,'\figures_raw\s2_scatter_chosen_multis.svg'],'-dsvg')
+
+print_svg('fig4-2_cpd_scatter_choice_multis')
 
 
 disp('Mean CPD ratio, outcome/choice:')

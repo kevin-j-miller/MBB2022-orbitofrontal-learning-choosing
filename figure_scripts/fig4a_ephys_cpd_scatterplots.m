@@ -44,10 +44,10 @@ ylabel({'CPD: Chosen Value'},'fontsize',16);
 xlabel({'CPD: Outcome Value'},'fontsize',16);
 xlim([axmin,axmax]); ylim([axmin,axmax]);
 title('Outcome Value vs. Chosen Value');
-print_svg('fig3_cpd_scatter_chosen')
+print_svg('fig4_cpd_scatter_chosen')
 
 loglog_scatter_diagonal_histogram(xs, ys, axmin, axmax)
-print_svg('fig3_cpd_scatter_chosen_hist')
+print_svg('fig4_cpd_scatter_chosen_hist')
 
 disp('Mean CPD ratio, outcome/chosen:')
 disp(mean(xs ./ ys))
@@ -80,10 +80,10 @@ ylabel({'CPD: Choice Value Difference'},'fontsize',16);
 xlabel({'COD: Outcome Value'},'fontsize',16);
 xlim([axmin,axmax]); ylim([axmin,axmax]);
 title('Outcome Value vs. Choice Value');
-print_svg('fig3_cpd_scatter_choice')
+print_svg('fig4_cpd_scatter_choice')
 
 loglog_scatter_diagonal_histogram(xs, ys, axmin, axmax)
-print_svg('fig3_cpd_scatter_choice_hist')
+print_svg('fig4_cpd_scatter_choice_hist')
 
 disp('Mean CPD ratio, outcome/choice:')
 disp(mean(xs ./ ys))

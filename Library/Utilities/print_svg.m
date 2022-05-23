@@ -4,6 +4,5 @@ function print_svg(filename)
 panel_path = fullfile(files_path, 'figure_panels', filename);
 set(gca,'FontName','Calibri');
 print(panel_path, '-dsvg')
-close(gcf)
 
 end

@@ -22,6 +22,7 @@ ylim([0,ymax]); xlim([-2,2])
 xlabel('Time from Poke (s)','fontsize',16);
 title('Step 2 Init (pre-ITI)','fontsize',20);
 set(gca,'fontsize',20)
+set(gca,'FontName','Calibri');
 
 %figs(2) = figure; 
 subplot(1,4,2); hold on
@@ -36,6 +37,7 @@ ylim([0,ymax]); xlim([-2,6])
 xlabel('Time from Poke (s)','fontsize',16);
 title('Reward Port (pre-ITI)','fontsize',20);
 set(gca,'fontsize',20)
+set(gca,'FontName','Calibri');
 
 %figs(3) = figure; 
 subplot(1,4,3); hold on
@@ -50,6 +52,7 @@ ylim([0,ymax]); xlim([-6,2])
 xlabel('Time from Poke (s)','fontsize',16);
 title('Trial Initiation (post-ITI)','fontsize',20);
 set(gca,'fontsize',20)
+set(gca,'FontName','Calibri');
 
 %figs(4) = figure; 
 subplot(1,4,4); hold on
@@ -64,5 +67,6 @@ ylim([0,ymax]); xlim([-2,2])
 xlabel('Time from Poke (s)','fontsize',16);
 title('Choice Port (post-ITI)','fontsize',20);
 set(gca,'fontsize',20)
+set(gca,'FontName','Calibri');
 
 set(gcf, 'pos', [50, -500, 1800, 400])

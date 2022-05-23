@@ -19,8 +19,6 @@ for unit_i = 1:length(reward_time_weights_cell)
     lock_weights(unit_i,:,:) = reward_time_weights_cell{unit_i};
 end
 
-
-
 %% Sanity check: Plot the median abs weight for each regressor.
 % Check that the timecourses look like what you expect
 abs_weight_timecourse = squeeze(median(abs(lock_weights)));

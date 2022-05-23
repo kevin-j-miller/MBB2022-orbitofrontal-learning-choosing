@@ -88,6 +88,9 @@ for lock_i = 1:4
     end
 end
 
+print_svg('fig4c_cpd-timecourse-task')
+
+
 %% Value variables plot
 
 
@@ -113,3 +116,5 @@ for lock_i = 1:4
             (1-0.03*(reg_i-8))*ones(1,sum(sig_bins(:,reg_i))), '.', 'markeredgecolor', plots.colors(reg_i-7, :))
     end
 end
+
+print_svg('fig4b_cpd-timecourse-task')
