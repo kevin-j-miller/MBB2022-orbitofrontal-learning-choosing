@@ -3,7 +3,6 @@ singles = find_singles(data.celldatas);
 clear data
 
 sse = load(fullfile(files_path, 'postprocessed_data', 'ofc_SSEs.mat'));
-% Check fraction excluded
 nRegs = size(sse.sse_leftout{1,1},1);
 
 %% Plots for singles
