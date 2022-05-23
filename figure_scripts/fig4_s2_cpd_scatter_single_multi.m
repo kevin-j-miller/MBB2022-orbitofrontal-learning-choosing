@@ -2,9 +2,9 @@ data = load(fullfile(files_path, 'postprocessed_data', 'ofc_celldatas_ensemble')
 singles = find_singles(data.celldatas);
 clear data
 
-sse = load(fullfile(files_path, 'postprocessed_data', 'ofc_SSEs.mat'));
+ephys_regression_results = load(fullfile(files_path, 'postprocessed_data', 'ephys_regression_results'));
 
-nCells = length(sse.bad_glm);
+nCells = length(ephys_regression_results.bad_glm);
 nRegs = 10;
 window_size = 1;
 
@@ -13,10 +13,10 @@ for cell_i = 1:nCells
 
         for lock_i = 1:4
            
-            entry_bins = abs(sse.bin_mids_by_lock{lock_i}) <= window_size/2;
+            entry_bins = abs(ephys_regression_results.bin_mids_by_lock{lock_i}) <= window_size/2;
            
-            sse_entry_leaveout = sum(sse.sse_leftout{lock_i, cell_i}(:,entry_bins),2);
-            sse_entry_full = sum(sse.sse_full_all{lock_i, cell_i}(entry_bins));
+            sse_entry_leaveout = sum(ephys_regression_results.sse_leftout{lock_i, cell_i}(:,entry_bins),2);
+            sse_entry_full = sum(ephys_regression_results.sse_full_all{lock_i, cell_i}(entry_bins));
             cpd_entry_true(lock_i, cell_i,:) = 100*(sse_entry_leaveout - repmat(sse_entry_full, [nRegs,1])) ./ sse_entry_leaveout; 
        
         end

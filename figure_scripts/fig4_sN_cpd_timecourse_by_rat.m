@@ -9,9 +9,9 @@ unique_ratnames = unique(celldata_ratnames);
 
 %% Load SSEs
 
-sse = load(fullfile(files_path, 'postprocessed_data', 'ofc_SSEs.mat'));
+ephys_regression_results = load(fullfile(files_path, 'postprocessed_data', 'ephys_regression_results'));
 % Check fraction excluded
-nRegs = size(sse.sse_leftout{1,1},1);
+nRegs = size(ephys_regression_results.sse_leftout{1,1},1);
 
 %% Make the plots for each rat
 for rat_i = 1:length(unique_ratnames)
@@ -21,16 +21,16 @@ for rat_i = 1:length(unique_ratnames)
 
     % CPDS for just this rat
     for lock_i = 1:4
-        sse_full = sum([sse.sse_full_all{lock_i, rat_inds}],2)';
+        sse_full = sum([ephys_regression_results.sse_full_all{lock_i, rat_inds}],2)';
 
-        temp = cell2mat(reshape(sse.sse_leftout(lock_i, rat_inds),1,1,[]));
+        temp = cell2mat(reshape(ephys_regression_results.sse_leftout(lock_i, rat_inds),1,1,[]));
         sse_leaveout = sum(temp, 3);
 
         cpd{lock_i} = 100 * (sse_leaveout - repmat(sse_full, [nRegs, 1])) ./ sse_leaveout;
     end
 
     % Task variables plot
-    plots.xs = sse.bin_mids_by_lock;
+    plots.xs = ephys_regression_results.bin_mids_by_lock;
     for lock_i = 1:4
         plots.ys{lock_i} = cpd{lock_i}(1:end-3,:);
     end
@@ -42,7 +42,7 @@ for rat_i = 1:length(unique_ratnames)
 
 
     % Value variables plot
-    plots.xs = sse.bin_mids_by_lock;
+    plots.xs = ephys_regression_results.bin_mids_by_lock;
     for lock_i = 1:4
         plots.ys{lock_i} = cpd{lock_i}(end-2:end,:);
     end

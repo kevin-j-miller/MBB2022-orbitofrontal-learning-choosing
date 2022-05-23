@@ -1,6 +1,6 @@
-sse = load(fullfile(files_path, 'postprocessed_data', 'ofc_SSEs.mat'));
+reg_results = load(fullfile(files_path, 'postprocessed_data', 'ephys_regression_results.mat'));
 
-nUInits = length(sse.bad_glm);
+nUnits = length(reg_results.bad_glm);
 nRegs = 10;
 window_size = 1;
 
@@ -9,10 +9,10 @@ for unit_i = 1:nUnits
         loaded = load(fullfile(files_path, 'postprocessed_data', 'circshift_SSEs', ['circshift_sse_unit_' num2str(unit_i) '.mat']));
         for lock_i = 1:4
            
-            entry_bins = abs(sse.bin_mids_by_lock{lock_i}) <= window_size/2;
+            entry_bins = abs(reg_results.bin_mids_by_lock{lock_i}) <= window_size/2;
            
-            sse_entry_leaveout = sum(sse.sse_leftout{lock_i, unit_i}(:,entry_bins),2);
-            sse_entry_full = sum(sse.sse_full_all{lock_i, unit_i}(entry_bins));
+            sse_entry_leaveout = sum(reg_results.sse_leftout{lock_i, unit_i}(:,entry_bins),2);
+            sse_entry_full = sum(reg_results.sse_full_all{lock_i, unit_i}(entry_bins));
             cpd_entry_true(lock_i, unit_i,:) = 100*(sse_entry_leaveout - repmat(sse_entry_full, [nRegs,1])) ./ sse_entry_leaveout; 
             
             shifted_sse_entry_leaveout = sum(loaded.sse_leftout{lock_i}(:, :, entry_bins),3);

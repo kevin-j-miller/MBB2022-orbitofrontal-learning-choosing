@@ -1,0 +1,35 @@
+# stan_version_major = 2
+# stan_version_minor = 28
+# stan_version_patch = 0
+# model = twostep_glm_opto_model
+# start_datetime = 2022-03-30 16:50:13 UTC
+# method = optimize
+#   optimize
+#     algorithm = lbfgs (Default)
+#       lbfgs
+#         init_alpha = 0.001 (Default)
+#         tol_obj = 9.9999999999999998e-13 (Default)
+#         tol_rel_obj = 10000 (Default)
+#         tol_grad = 1e-08 (Default)
+#         tol_rel_grad = 10000000 (Default)
+#         tol_param = 1e-08 (Default)
+#         history_size = 5 (Default)
+#     iter = 5000
+#     save_iterations = 0 (Default)
+# id = 1 (Default)
+# data
+#   file = C:\Users\kjmd1\Documents\Github\Code_for_projects\ofc-learning-choosing-paper\figure_scripts\wd_\20220330_175012897\Cn01j1UBBuqWnolNEAqaB-data.R
+# init = 2 (Default)
+# random
+#   seed = 213491
+# output
+#   file = Cn01j1UBBuqWnolNEAqaB-output.csv
+#   diagnostic_file =  (Default)
+#   refresh = 100 (Default)
+#   sig_figs = -1 (Default)
+#   profile_file = profile.csv (Default)
+# num_threads = 1 (Default)
+# stanc_version = stanc3 763421b9
+# stancflags = 
+lp__,beta_cr_cntrl.1,beta_cr_cntrl.2,beta_cr_cntrl.3,beta_co_cntrl.1,beta_co_cntrl.2,beta_co_cntrl.3,beta_ur_cntrl.1,beta_ur_cntrl.2,beta_ur_cntrl.3,beta_uo_cntrl.1,beta_uo_cntrl.2,beta_uo_cntrl.3,beta_bias,beta_cr_rew.1,beta_cr_rew.2,beta_cr_rew.3,beta_co_rew.1,beta_co_rew.2,beta_co_rew.3,beta_ur_rew.1,beta_ur_rew.2,beta_ur_rew.3,beta_uo_rew.1,beta_uo_rew.2,beta_uo_rew.3,beta_cr_ch.1,beta_cr_ch.2,beta_cr_ch.3,beta_co_ch.1,beta_co_ch.2,beta_co_ch.3,beta_ur_ch.1,beta_ur_ch.2,beta_ur_ch.3,beta_uo_ch.1,beta_uo_ch.2,beta_uo_ch.3,beta_cr_both.1,beta_cr_both.2,beta_cr_both.3,beta_co_both.1,beta_co_both.2,beta_co_both.3,beta_ur_both.1,beta_ur_both.2,beta_ur_both.3,beta_uo_both.1,beta_uo_both.2,beta_uo_both.3
+-15304.7,2.33849,0.300898,0.0697782,0.328803,-0.228097,-0.0826883,1.90132,-0.237831,-0.0452875,3.73892,0.327613,0.0154225,0.254047,2.37855,0.0392334,-0.170609,0.493022,-0.228092,-0.0522421,2.03221,-0.100152,-0.500947,3.79212,0.323108,-0.173317,2.15968,0.202338,0.280901,0.349369,-0.273594,-0.0588379,1.70734,-0.435314,0.00690031,3.84999,0.016222,0.272161,2.43291,-0.0670349,0.170939,0.465724,-0.101404,0.0174394,1.9867,-0.393741,0.038779,4.22469,0.128108,-0.0606396
