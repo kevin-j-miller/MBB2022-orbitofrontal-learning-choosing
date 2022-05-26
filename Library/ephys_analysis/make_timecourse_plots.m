@@ -69,4 +69,4 @@ title('Choice Port (post-ITI)','fontsize',20);
 set(gca,'fontsize',20)
 set(gca,'FontName','Calibri');
 
-set(gcf, 'pos', [50, -500, 1800, 400])
+set(gcf, 'pos', [50, 500, 1800, 400])
