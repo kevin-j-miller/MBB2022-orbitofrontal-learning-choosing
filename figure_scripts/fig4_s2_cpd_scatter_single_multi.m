@@ -47,7 +47,7 @@ xlabel({'CPD: Outcome Value'},'fontsize',16);
 xlim([axmin,axmax]); ylim([axmin,axmax]);
 title('Outcome Value vs. Chosen Value');
 
-print_svg('fig4-2_cpd_scatter_chosen_singles')
+print_svg('fig4-s2_cpd_scatter_chosen_singles')
 
 disp('Mean CPD ratio, outcome/chosen:')
 disp(mean(xs ./ ys))
@@ -80,7 +80,7 @@ xlabel({'COD: Outcome Value'},'fontsize',16);
 xlim([axmin,axmax]); ylim([axmin,axmax]);
 title('Outcome Value vs. Choice Value');
 
-print_svg('fig4-2_cpd_scatter_choice_singles')
+print_svg('fig4-s2_cpd_scatter_choice_singles')
 
 
 disp('Mean CPD ratio, outcome/choice:')
@@ -115,7 +115,7 @@ xlabel({'CPD: Outcome Value'},'fontsize',16);
 xlim([axmin,axmax]); ylim([axmin,axmax]);
 title('Outcome Value vs. Chosen Value');
 
-print_svg('fig4-2_cpd_scatter_chosen_multis')
+print_svg('fig4-s2_cpd_scatter_chosen_multis')
 
 disp('Mean CPD ratio, outcome/chosen:')
 disp(mean(xs ./ ys))
@@ -148,7 +148,7 @@ xlabel({'COD: Outcome Value'},'fontsize',16);
 xlim([axmin,axmax]); ylim([axmin,axmax]);
 title('Outcome Value vs. Choice Value');
 
-print_svg('fig4-2_cpd_scatter_choice_multis')
+print_svg('fig4-s2_cpd_scatter_choice_multis')
 
 
 disp('Mean CPD ratio, outcome/choice:')

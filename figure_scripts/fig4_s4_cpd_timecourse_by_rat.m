@@ -38,8 +38,7 @@ for rat_i = 1:length(unique_ratnames)
     plots.err = 0;
 
     figs_single_task = make_timecourse_plots(plots);
-    print_svg(['fig4-sN_cpd-timecourse-by-rat-task-' num2str(rat_i)])
-
+    print_svg(['fig4-s4_cpd-timecourse-by-rat-task-' num2str(rat_i)])
 
     % Value variables plot
     plots.xs = ephys_regression_results.bin_mids_by_lock;
@@ -51,7 +50,7 @@ for rat_i = 1:length(unique_ratnames)
 
     figs_single_val = make_timecourse_plots(plots);
 
-    print_svg(['fig4-sN_cpd-timecourse-by-rat-value-' num2str(rat_i)])
+    print_svg(['fig4-s4_cpd-timecourse-by-rat-value-' num2str(rat_i)])
 
     nSingles(rat_i) = sum(singles & rat_inds');
     nMultis(rat_i) = sum(~singles & rat_inds');

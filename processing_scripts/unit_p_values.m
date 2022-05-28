@@ -1,6 +1,6 @@
 %% Unit-wise p-values
 % Load necessary data
-sse = load(fullfile(files_path, 'postprocessed_data', 'ofc_SSEs.mat'));
+sse = load(fullfile(files_path, 'postprocessed_data', 'ephys_regression_results.mat'));
 
 % Determine number of units, number of trials for each unit
 data = load(fullfile(files_path, 'postprocessed_data', 'ofc_celldatas_ensemble'));
