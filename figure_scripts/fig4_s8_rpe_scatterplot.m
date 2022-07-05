@@ -124,7 +124,7 @@ for timebin_to_consider = [0.2, 0.4, 0.6, 0.8]; % In seconds, from the time of r
         num2str(1 - binocdf(rpe_sum, nUnits, 0.5))]);
 
 
-    print_svg(['Fig4-sN_rpe-scatter-' num2str(1000*timebin_to_consider)])
+    print_svg(['Fig4-s8_rpe-scatter-' num2str(1000*timebin_to_consider)])
 end
 
 %% Plot example units
@@ -178,7 +178,7 @@ event_times{3} = celldata.s2_times(good_trials &...
 title('Omission Trials')
 xlabel('Time from Omission')
 
-figure(fig_psth_r); ylim([0, max(axmax_r, axmax_o)]); print_svg(['Fig4-sN_rpe-unit-' num2str(example_ind) '-r'])
-figure(fig_psth_o); ylim([0, max(axmax_r, axmax_o)]);  print_svg(['Fig4-sN_rpe-unit-' num2str(example_ind) '-o'])
+figure(fig_psth_r); ylim([0, max(axmax_r, axmax_o)]); print_svg(['Fig4-s8_rpe-unit-' num2str(example_ind) '-r'])
+figure(fig_psth_o); ylim([0, max(axmax_r, axmax_o)]);  print_svg(['Fig4-s8_rpe-unit-' num2str(example_ind) '-o'])
 
 end

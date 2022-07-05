@@ -1,4 +1,8 @@
-function results = iti_regression_copd(spike_counts, regressors)
+function results = iti_regression_copd(spike_counts, regressors, family)
+
+if ~exist('model','var')
+    family = 'poisson';
+end
 
 nBins = size(spike_counts,2);
 nRegs = size(regressors,2);
@@ -17,7 +21,7 @@ end
 
 for bin_i = 1:nBins
     for reg_i = 1:nRegs
-        copd_sub = (devs_leftOut(reg_i,bin_i) - dev_full(bin_i)) / devs_leftOut(reg_i, bin_i);
+        copd_sub = 100*(devs_leftOut(reg_i,bin_i) - dev_full(bin_i)) / devs_leftOut(reg_i, bin_i);
         copd(bin_i,reg_i) = copd_sub;
     end
 end
@@ -49,7 +53,7 @@ results.weights = weights;
             % Set up glmnet options. Pick our lambdas manually to be sure of a broad range
             options = glmnetSet(); options.lambda = lambdas;
             % Do the fit with glmnet.
-            fit = glmnet(xs, ys, 'poisson', options);
+            fit = glmnet(xs, ys, family, options);
             
             dev_by_lambda = (1-fit.dev) * fit.nulldev;
             [best_dev, best_ind] = min(dev_by_lambda);

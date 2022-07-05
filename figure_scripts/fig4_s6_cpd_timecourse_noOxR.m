@@ -21,11 +21,12 @@ for lock_i = 1:4
     plots.ys{lock_i} = cpd{lock_i}(1:end-3,:);
 end
 plots.colors = colors_task;
+plots.colors(5,:) = []; % This is the color for RxO, which is left out for this figure
 plots.err = 0;
 
 figs = make_timecourse_plots(plots)
 
-print_svg('fig4-s5_cpd-timecourse-task')
+print_svg('fig4-s6_cpd-timecourse-task')
 
 
 %% Value variables plot
@@ -40,7 +41,7 @@ plots.err =  0;
 
 figs = make_timecourse_plots(plots);
 
-print_svg('fig4-s5_cpd-timecourse-value')
+print_svg('fig4-s6_cpd-timecourse-value')
 
 %%
 
@@ -88,7 +89,7 @@ xlabel({'CPD: Outcome Value'},'fontsize',16);
 xlim([axmin,axmax]); ylim([axmin,axmax]);
 title('Outcome Value vs. Choice Value');
 
-print_svg('fig4-s5_cpd-scatter')
+print_svg('fig4-s6_cpd-scatter')
 
 
 disp('Mean CPD ratio, outcome/choice:')

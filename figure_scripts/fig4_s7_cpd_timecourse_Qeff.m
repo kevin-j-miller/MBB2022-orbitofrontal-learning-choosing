@@ -47,7 +47,7 @@ figs = make_timecourse_plots(plots)
 
 dot_order = [1,2,6,3,5,7,4];
 
-print_svg('fig4-s6_cpd-timecourse-value-Qeff')
+print_svg('fig4-s7_cpd-timecourse-value-Qeff')
 
 %% Value variables timecourse
 
@@ -61,7 +61,7 @@ plots.err =  0;
 
 figs = make_timecourse_plots(plots);
 
-print_svg('fig4-s6_cpd-timecourse-task-Qeff')
+print_svg('fig4-s7_cpd-timecourse-task-Qeff')
 
 %% Scatterplot: Choice Value
 
@@ -86,7 +86,7 @@ xlabel({'CPD: Outcome Value'},'fontsize',16);
 xlim([axmin,axmax]); ylim([axmin,axmax]);
 title('Outcome Value vs. Choice Value');
 
-print_svg('fig4-s6_cpd-scatter-choice-Qeff')
+print_svg('fig4-s7_cpd-scatter-choice-Qeff')
 
 
 %% Scatterplot: Choice Value
@@ -112,7 +112,7 @@ xlabel({'CPD: Outcome Value'},'fontsize',16);
 xlim([axmin,axmax]); ylim([axmin,axmax]);
 title('Outcome Value vs. Chosen Value');
 
-print_svg('fig4-s6_cpd-scatter-chosen-Qeff')
+print_svg('fig4-s7_cpd-scatter-chosen-Qeff')
 
 %% Sanity check indices
 ephys_regression_results = load(fullfile(files_path, 'postprocessed_data', 'ephys_regression_results'));

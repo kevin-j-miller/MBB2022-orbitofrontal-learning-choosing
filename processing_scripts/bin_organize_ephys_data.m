@@ -89,7 +89,7 @@ end
 % Set up empty ensemble matrix. For each timelock, this will be nTrials
 % by nBins, and contain spike counts. 
 for lock_i = 1:4
-    spike_ensemble{lock_i} = NaN(nCells, max([celldatas.nTrials]), length(bin_mids_by_lock{lock_i}));
+    spike_ensemble{lock_i} = NaN(nUnits, max([celldatas.nTrials]), length(bin_mids_by_lock{lock_i}));
 end
 
 % Compute spike count matrix
