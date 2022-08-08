@@ -1,5 +1,6 @@
 function params = fit_stan_model(standata)
 
+
 model_file = fullfile(code_path, 'library', 'behavior_analysis','stan_models','multiagent_model_single.stan');
 
 
@@ -24,7 +25,7 @@ while ~done
 
         pause(rand); % Pause for random fraction of a second to make extra sure we're not in the same millisecond as another process
 
-        wd = fullfile('wd_', datestr(now,'yyyymmdd_HHMMSSFFF'));        
+        wd = fullfile(code_path, 'library', 'behavior_analysis','stan_models', 'working_folders', datestr(now,'yyyymmdd_HHMMSSFFF'));        
         mkdir(wd);
 
         fit = stan('file', model_file, 'data', standata, 'working_dir', wd, 'verbose', false, 'method', 'optimize');
